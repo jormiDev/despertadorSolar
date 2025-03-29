@@ -5,34 +5,67 @@ I2C device LCD 102A - found at address 0x27
 */
 
 
-
-
 #include <Arduino.h>
-
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
 
-// Crear el objeto lcd  dirección  0x27 y 16 columnas x 2 filas
-LiquidCrystal_I2C lcd(0x27, 16, 2); //
+#include "constantes.h"
+#include "dSolar_boton.hpp"
+#include "dSolar_lcd.hpp"
+#include "dSolar_led.hpp"
+#include "dSolar_logica.hpp"
+
+
+
+// dSolar_boton
+
+
+
+// dSolar_lcd
+LiquidCrystal_I2C lcd(LCD_I2C_ADR, LCD_COLUMNAS, LCD_FILAS); 
+
+// dSolar_led
+
+
+// dSolar_logica
+
+
+
+/*
+********   S E T U P   ***************
+*/
 
 void setup()
 {
-  // Inicializar el LCD
-  lcd.init();
 
-  // Encender la luz de fondo.
-  lcd.backlight();
+  // Serial init
+  Serial.begin(9600);
+  while (!Serial)
+    ;
 
-  // Escribimos el Mensaje en el LCD.
-  lcd.print("Hola Mundo");
+  Serial.println("setup   INIT");
+
+  // init LCD
+  DS_lcd_setup();   
+  Serial.println("setup   -  LCD")     ;
+
+
+
+  //fin setup
+  lcd.print("fin setup");
+  delay(2000);
+  lcd.clear();
+  Serial.println("setup   FIN");
+  Serial.println("");
+  Serial.println("loop    INIT");
 }
+
+/*
+********   L O O P   ***************
+*/
 
 void loop()
 {
-  // Ubicamos el cursor en la primera posición(columna:0) de la segunda línea(fila:1)
-  lcd.setCursor(0, 1);
-  // Escribimos el número de segundos trascurridos
-  lcd.print(millis() / 1000);
-  lcd.print(" Segundos");
-  delay(100);
+  delay(1000);
+  DS_lcd_pantalla(1);
 }

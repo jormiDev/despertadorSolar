@@ -1,5 +1,13 @@
 /*
 
+
+lib_deps =
+  luisllamasbinaburo/I2CScanner@^1.0.1
+
+
+main.cpp
+
+
 #include "I2CScanner.h"
 
 I2CScanner scanner;
@@ -19,5 +27,5 @@ void loop()
   scanner.Scan();
   delay(5000);
 }
-  
+
 */
