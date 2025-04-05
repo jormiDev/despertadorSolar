@@ -14,7 +14,7 @@ pines conectados
 /*
 main
 */
-
+#define     VERSION             0.01
 
 
 /*
