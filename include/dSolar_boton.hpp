@@ -3,15 +3,29 @@
 
 #include "Arduino.h"
 #include "constantes.h"
+#include "ezButton.h"
 
 /*
 objetos y variables
 */
-
+extern ezButton boton_enter;
+extern ezButton boton_mas;
+extern ezButton boton_menos;
+extern ezButton boton_menu;
 
 /*
 funciones
 */
+
+// init botones
+void DS_boton_setup();
+
+// llamada en cada loop
+void DS_boton_loop();
+
+// funcion de test de botones
+void DS_boton_test(int _prueba);
+
 
 
 

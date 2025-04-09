@@ -11,6 +11,16 @@ pines conectados
 #define     PIN_SDA             A4
 #define     PIN_SCL             A5
 
+#define     PIN_BOTON_ENTER     2
+#define     PIN_BOTON_MAS       3       
+#define     PIN_BOTON_MENOS     4
+#define     PIN_BOTON_MENU      5
+
+
+#define     PIN_LED_MINIMO       7
+#define     PIN_LED_MEDIO        8       
+#define     PIN_LED_MAXIMO       9
+
 /*
 main
 */

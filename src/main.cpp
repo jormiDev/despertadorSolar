@@ -42,14 +42,18 @@ LCD 1602
 
 
 // dSolar_boton
-
-
+ezButton boton_enter(PIN_BOTON_ENTER);
+ezButton boton_mas(PIN_BOTON_MAS);
+ezButton boton_menos(PIN_BOTON_MENOS);
+ezButton boton_menu(PIN_BOTON_MENU);
 
 // dSolar_lcd
 LiquidCrystal_I2C lcd(LCD_I2C_ADR, LCD_COLUMNAS, LCD_FILAS); 
 
 // dSolar_led
-
+ezLED led_minimo(PIN_LED_MINIMO);
+ezLED led_medio(PIN_LED_MEDIO);
+ezLED led_maximo(PIN_LED_MAXIMO);
 
 // dSolar_logica
 int maqEstados;
@@ -72,6 +76,10 @@ void setup()
   // init LCD
   DS_lcd_setup();   
   Serial.println("setup   -  LCD")     ;
+
+  // init botones
+  DS_boton_setup();
+  Serial.println("setup   -  Botones");
 
   // init logica
   maqEstados = 0;
@@ -97,6 +105,18 @@ void setup()
 
 void loop()
 {
+
+// llamadas en cada loop  
+DS_boton_loop();
+DS_led_loop();
+
+/*
+zona de test
+*/
+//DS_boton_test(0);
+DS_led_test(0);
+
+/*
 switch (maqEstados)
 {
 case 0:     // inicial
@@ -108,10 +128,10 @@ default:
   maqEstados = 0;
   break;
 }
+*/
 
 
 
 
-
-  delay(5000);
+  //delay(500);
 }
