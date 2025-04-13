@@ -38,6 +38,7 @@ LCD 1602
 #include "dSolar_lcd.hpp"
 #include "dSolar_led.hpp"
 #include "dSolar_logica.hpp"
+#include "dSolar_buzzer.hpp"
 
 
 
@@ -57,6 +58,9 @@ ezLED led_maximo(PIN_LED_MAXIMO);
 
 // dSolar_logica
 int maqEstados;
+
+// dSolar_buzzer
+ezBuzzer mibuzzer(PIN_BUZZER);
 
 
 /*
@@ -83,7 +87,11 @@ void setup()
 
   // init logica
   maqEstados = 0;
+  Serial.println("setup   -  Logica");
 
+  // init buzzer
+  DS_buzzer_setup();
+  Serial.println("setup   -  Buzzer");
 
   //fin setup
   Serial.println("setup   FIN");
@@ -109,6 +117,8 @@ void loop()
 // llamadas en cada loop  
 DS_boton_loop();
 DS_led_loop();
+DS_buzzer_loop();
+
 
 /*
 zona de test

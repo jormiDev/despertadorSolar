@@ -21,6 +21,8 @@ pines conectados
 #define     PIN_LED_MEDIO        8       
 #define     PIN_LED_MAXIMO       9
 
+#define     PIN_BUZZER          10
+
 /*
 main
 */
@@ -49,6 +51,11 @@ dSolar_boton.hpp
 
 /*
 dSolar_logica.hpp
+*/
+
+
+/*
+dSolar_buzzer.hpp
 */
 
 
