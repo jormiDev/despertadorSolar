@@ -57,7 +57,8 @@ ezLED led_medio(PIN_LED_MEDIO);
 ezLED led_maximo(PIN_LED_MAXIMO);
 
 // dSolar_logica
-int maqEstados;
+int maqEstado;
+int maqEstadoPrevio;
 
 // dSolar_buzzer
 ezBuzzer mibuzzer(PIN_BUZZER);
@@ -86,7 +87,7 @@ void setup()
   Serial.println("setup   -  Botones");
 
   // init logica
-  maqEstados = 0;
+  DS_logica_setup();
   Serial.println("setup   -  Logica");
 
   // init buzzer
@@ -120,28 +121,15 @@ DS_led_loop();
 DS_buzzer_loop();
 
 
+
 /*
 zona de test
 */
 //DS_boton_test(0);
-DS_led_test(0);
-
-/*
-switch (maqEstados)
-{
-case 0:     // inicial
-  delay(1);
-  break;
-
-default:
-  Serial.println("maqEstado - error, salto a estado 0");
-  maqEstados = 0;
-  break;
-}
-*/
+//DS_led_test(0);
 
 
+// bloque principal de logica de estados
+DS_logica_loop();
 
-
-  //delay(500);
 }

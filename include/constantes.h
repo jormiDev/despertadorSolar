@@ -41,16 +41,8 @@ dSolar_lcd.hpp
 dSolar_led.hpp
 */
 
-
-
 /*
 dSolar_boton.hpp
-*/
-
-
-
-/*
-dSolar_logica.hpp
 */
 
 
@@ -58,5 +50,16 @@ dSolar_logica.hpp
 dSolar_buzzer.hpp
 */
 
+/*
+dSolar_logica.hpp
+*/
+#define     MENSAJE_DEF     "maqEstado - default"
+#define     MENSAJE_0       "maqEstado -   0 - inicio"
+#define     MENSAJE_10      "maqEstado -  10 - "
+#define     MENSAJE_20      "maqEstado -  20 - "
+#define     MENSAJE_30      "maqEstado -  30 - "
+#define     MENSAJE_40      "maqEstado -  40 - "
+#define     MENSAJE_50      "maqEstado -  50 - "
+#define     MENSAJE_60      "maqEstado -  60 - "
 
 #endif
