@@ -87,7 +87,7 @@ void setup()
   Serial.println("setup   -  Botones");
 
   // init logica
-  DS_logica_setup();
+  maqEstado = 0;
   Serial.println("setup   -  Logica");
 
   // init buzzer
@@ -120,7 +120,7 @@ DS_boton_loop();
 DS_led_loop();
 DS_buzzer_loop();
 
-
+DS_logica_loop();
 
 /*
 zona de test
@@ -129,7 +129,10 @@ zona de test
 //DS_led_test(0);
 
 
-// bloque principal de logica de estados
-DS_logica_loop();
 
+
+
+
+
+  //delay(500);
 }

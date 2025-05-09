@@ -41,25 +41,71 @@ dSolar_lcd.hpp
 dSolar_led.hpp
 */
 
+
+
 /*
 dSolar_boton.hpp
 */
+#define     BOTON_ENTER         2
+#define     BOTON_MAS           3
+#define     BOTON_MENOS         4
+#define     BOTON_MENU          5
+
+
+/*
+dSolar_logica.hpp
+*/
+//                              "1234567890123456"
+#define     MENSAJE_DEF         "maqEst default"
+#define     MENSAJE_00          "Inicio"
+#define     MENSAJE_10          "HH:MM:SS"
+
+#define     MENSAJE_20          "Leds"
+#define     MENSAJE_21          "encendido"
+#define     MENSAJE_22          "apagado"
+
+#define     MENSAJE_30          "Alarma"
+#define     MENSAJE_31          "activada"
+#define     MENSAJE_32          "desactivada"
+
+#define     MENSAJE_40          "Configuración"
+
+#define     MENSAJE_50          "Conf. Reloj"
+#define     MENSAJE_51          "Horas"
+#define     MENSAJE_52          "hh++"
+#define     MENSAJE_53          "hh--"
+#define     MENSAJE_55          "Minutos"
+#define     MENSAJE_56          "mm++"
+#define     MENSAJE_57          "mm--"
+
+#define     MENSAJE_60          "Conf. Leds"
+#define     MENSAJE_61          "Leds Alarma"
+#define     MENSAJE_62          "alarma++"
+#define     MENSAJE_63          "alarma--"
+#define     MENSAJE_65          "Leds Luces"
+#define     MENSAJE_66          "luces++"
+#define     MENSAJE_67          "luces--"
+
+#define     MENSAJE_70          "Conf. Alarma"
+#define     MENSAJE_71          "activada"
+#define     MENSAJE_72          "desactivada"
+#define     MENSAJE_73          "Horas"
+#define     MENSAJE_74          "h++"
+#define     MENSAJE_75          "h--"
+#define     MENSAJE_76          "Minutos"
+#define     MENSAJE_77          "m++"
+#define     MENSAJE_78          "m--"
+#define     MENSAJE_80          "Vol. Alarma"
+#define     MENSAJE_81          "vol++"
+#define     MENSAJE_82          "vol--"
+#define     MENSAJE_90          "Salir"
+
+
 
 
 /*
 dSolar_buzzer.hpp
 */
 
-/*
-dSolar_logica.hpp
-*/
-#define     MENSAJE_DEF     "maqEstado - default"
-#define     MENSAJE_0       "maqEstado -   0 - inicio"
-#define     MENSAJE_10      "maqEstado -  10 - "
-#define     MENSAJE_20      "maqEstado -  20 - "
-#define     MENSAJE_30      "maqEstado -  30 - "
-#define     MENSAJE_40      "maqEstado -  40 - "
-#define     MENSAJE_50      "maqEstado -  50 - "
-#define     MENSAJE_60      "maqEstado -  60 - "
 
 #endif

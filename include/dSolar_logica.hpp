@@ -3,12 +3,18 @@
 
 #include "Arduino.h"
 #include "constantes.h"
+#include "ezButton.h"
 
 /*
 objetos y variables
 */
 extern int maqEstado;
 extern int maqEstadoPrevio;
+
+extern ezButton boton_enter;
+extern ezButton boton_mas;
+extern ezButton boton_menos;
+extern ezButton boton_menu;
 
 /*
 funciones
