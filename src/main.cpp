@@ -52,6 +52,8 @@ ezButton boton_menu(PIN_BOTON_MENU);
 LiquidCrystal_I2C lcd(LCD_I2C_ADR, LCD_COLUMNAS, LCD_FILAS); 
 
 // dSolar_led
+int ledEstado;
+int ledAlarma;
 ezLED led_minimo(PIN_LED_MINIMO);
 ezLED led_medio(PIN_LED_MEDIO);
 ezLED led_maximo(PIN_LED_MAXIMO);
@@ -62,7 +64,8 @@ int maqEstadoPrevio;
 
 // dSolar_buzzer
 ezBuzzer mibuzzer(PIN_BUZZER);
-
+int alarmaEstado;
+int alarmaVolumen;
 
 /*
 ********   S E T U P   ***************

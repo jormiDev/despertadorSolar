@@ -3,7 +3,7 @@
 // init buzzer
 void DS_buzzer_setup()
 {
-
+    alarmaEstado = 0;
 }
 
 // llamada en cada loop
@@ -60,4 +60,35 @@ if( _prueba == 0){
 }
 
 
+}
+
+// cambia el estado de la alarma activada/desactivada
+void DS_buzzer_estado()
+{
+    if (alarmaEstado == 0)
+    {
+        alarmaEstado = 1;
+        Serial.println(MENSAJE_31);
+    }
+    else
+    {
+        alarmaEstado = 0;
+        Serial.println(MENSAJE_32);
+    }
+}
+
+
+// cambia el volumen de la alarma 0(apagado)/1/2/3
+void DS_buzzer_volumen(int _vol)
+{
+    alarmaVolumen += _vol;
+    if (alarmaVolumen < 0)
+        alarmaVolumen = 0;
+    else if (alarmaVolumen > 3)
+        alarmaVolumen = 3;
+
+    if( _vol > 0)
+        Serial.println(MENSAJE_81); 
+    else
+        Serial.println(MENSAJE_82);
 }

@@ -4,6 +4,9 @@
 #include "Arduino.h"
 #include "constantes.h"
 #include "ezButton.h"
+#include "dSolar_buzzer.hpp"
+#include "dSolar_led.hpp"
+
 
 /*
 objetos y variables
@@ -11,10 +14,16 @@ objetos y variables
 extern int maqEstado;
 extern int maqEstadoPrevio;
 
+extern int alarmaEstado;
+extern int alarmaVolumen;
+
 extern ezButton boton_enter;
 extern ezButton boton_mas;
 extern ezButton boton_menos;
 extern ezButton boton_menu;
+
+extern int ledEstado;
+extern int ledAlarma;
 
 /*
 funciones

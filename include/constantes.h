@@ -23,6 +23,7 @@ pines conectados
 
 #define     PIN_BUZZER          10
 
+
 /*
 main
 */
@@ -61,8 +62,6 @@ dSolar_logica.hpp
 #define     MENSAJE_10          "HH:MM:SS"
 
 #define     MENSAJE_20          "Leds"
-#define     MENSAJE_21          "encendido"
-#define     MENSAJE_22          "apagado"
 
 #define     MENSAJE_30          "Alarma"
 #define     MENSAJE_31          "activada"
@@ -87,24 +86,27 @@ dSolar_logica.hpp
 #define     MENSAJE_67          "luces--"
 
 #define     MENSAJE_70          "Conf. Alarma"
-#define     MENSAJE_71          "activada"
-#define     MENSAJE_72          "desactivada"
-#define     MENSAJE_73          "Horas"
-#define     MENSAJE_74          "h++"
-#define     MENSAJE_75          "h--"
-#define     MENSAJE_76          "Minutos"
-#define     MENSAJE_77          "m++"
-#define     MENSAJE_78          "m--"
+#define     MENSAJE_71          "Horas"
+#define     MENSAJE_72         "h++"
+#define     MENSAJE_73         "h--"
+#define     MENSAJE_75         "Minutos"
+#define     MENSAJE_76         "m++"
+#define     MENSAJE_77         "m--"
+
 #define     MENSAJE_80          "Vol. Alarma"
 #define     MENSAJE_81          "vol++"
 #define     MENSAJE_82          "vol--"
+
 #define     MENSAJE_90          "Salir"
-
-
 
 
 /*
 dSolar_buzzer.hpp
+*/
+
+
+/*
+dSolar_relof.hpp
 */
 
 

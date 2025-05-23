@@ -9,6 +9,8 @@
 objetos y variables
 */
 extern ezBuzzer mibuzzer;
+extern int alarmaEstado;
+extern int alarmaVolumen;
 
 /*
 funciones
@@ -23,6 +25,11 @@ void DS_buzzer_loop();
 // funcion de test de buzzer
 void DS_buzzer_test(int _prueba);
 
+// cambia el estado de la alarma activada/desactivada
+void DS_buzzer_estado();
+
+// cambia el volumen de la alarma 0(apagado)/1/2/3
+void DS_buzzer_volumen(int _vol);
 
 
 
