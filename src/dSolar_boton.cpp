@@ -18,6 +18,20 @@ void DS_boton_loop()
     boton_menu.loop();
 }
 
+// funcion queBoton - devuelve el botón pulsado o cero
+int DS_boton_queBoton()
+{
+    if (boton_enter.isPressed())
+        return BOTON_ENTER;
+    if (boton_mas.isPressed())
+        return BOTON_MAS;
+    if (boton_menos.isPressed())
+        return BOTON_MENOS;
+    if (boton_menu.isPressed())
+        return BOTON_MENU;
+    return BOTON_ZERO; // no button pressed
+}
+
 // funcion de test de botones
 void DS_boton_test(int _prueba){
 
@@ -38,15 +52,20 @@ if( _prueba == 0){
     int btn2State = boton_mas.getState();
     int btn3State = boton_menos.getState();
     int btn4state = boton_menu.getState();
+
     Serial.print("enter    ");
-    Serial.println(btn1State);
-    Serial.print("mas      ");
-    Serial.println(btn2State);
-    Serial.print("menos    ");
-    Serial.println(btn3State);
-    Serial.print("menu     ");
+    Serial.print(btn1State);
+    Serial.print("      mas      ");
+    Serial.print(btn2State);
+    Serial.print("      menos    ");
+    Serial.print(btn3State);
+    Serial.print("      menu     ");
     Serial.println(btn4state);
-    delay(100);
+    //delay(300);
+}else if( _prueba == 2){
+    Serial.print("Botón presionado: ");
+    Serial.println(DS_boton_queBoton());
+    delay(300);
 }
 
 

@@ -2,6 +2,10 @@
 NOTAS
 */
 
+//  Github Project:
+// https://github.com/users/jormiDev/projects/3
+
+
 #ifndef _DSOLAR_CONSTANTES_H_
 #define _DSOLAR_CONSTANTES_H_
 
@@ -47,10 +51,11 @@ dSolar_led.hpp
 /*
 dSolar_boton.hpp
 */
-#define     BOTON_ENTER         2
-#define     BOTON_MAS           3
-#define     BOTON_MENOS         4
-#define     BOTON_MENU          5
+#define     BOTON_ZERO          0
+#define     BOTON_ENTER         1
+#define     BOTON_MAS           2
+#define     BOTON_MENOS         3
+#define     BOTON_MENU          4
 
 
 /*

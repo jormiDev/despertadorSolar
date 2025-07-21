@@ -128,7 +128,9 @@ DS_logica_loop();
 /*
 zona de test
 */
-//DS_boton_test(0);
+//DS_boton_test(2);
+
+
 //DS_led_test(0);
 
 
