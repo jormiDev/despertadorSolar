@@ -54,9 +54,9 @@ LiquidCrystal_I2C lcd(LCD_I2C_ADR, LCD_COLUMNAS, LCD_FILAS);
 // dSolar_led
 int ledEstado;
 int ledAlarma;
-ezLED led_minimo(PIN_LED_MINIMO);
-ezLED led_medio(PIN_LED_MEDIO);
-ezLED led_maximo(PIN_LED_MAXIMO);
+ezLED led_01(PIN_LED_01);
+ezLED led_02(PIN_LED_02);
+ezLED led_03(PIN_LED_03);
 
 // dSolar_logica
 int maqEstado;
@@ -65,7 +65,7 @@ int maqEstadoPrevio;
 // dSolar_buzzer
 ezBuzzer mibuzzer(PIN_BUZZER);
 int alarmaEstado;
-int alarmaVolumen;
+int alarmaMelodia;
 
 /*
 ********   S E T U P   ***************
@@ -81,21 +81,30 @@ void setup()
 
   Serial.println("setup   INIT");
 
-  // init LCD
-  DS_lcd_setup();   
-  Serial.println("setup   -  LCD")     ;
-
   // init botones
   DS_boton_setup();
   Serial.println("setup   -  Botones");
+
+ // init leds
+  DS_led_setup();
+  Serial.println("setup   -  Leds");
+
+  // init buzzer
+  DS_buzzer_setup();
+  Serial.println("setup   -  Buzzer");
+
+
+
+
+  // init LCD
+  DS_lcd_setup();   
+  Serial.println("setup   -  LCD")     ;
 
   // init logica
   maqEstado = 0;
   Serial.println("setup   -  Logica");
 
-  // init buzzer
-  DS_buzzer_setup();
-  Serial.println("setup   -  Buzzer");
+
 
   //fin setup
   Serial.println("setup   FIN");
@@ -128,11 +137,10 @@ DS_logica_loop();
 /*
 zona de test
 */
+
 //DS_boton_test(2);
-
-
-//DS_led_test(0);
-
+//DS_led_test(5);
+DS_buzzer_test(0);
 
 
 

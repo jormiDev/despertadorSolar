@@ -8,9 +8,9 @@
 /*
 objetos y variables
 */
-extern ezLED led_minimo;
-extern ezLED led_medio;
-extern ezLED led_maximo;
+extern ezLED led_01;
+extern ezLED led_02;
+extern ezLED led_03;
 extern int ledEstado;
 extern int ledAlarma;
 

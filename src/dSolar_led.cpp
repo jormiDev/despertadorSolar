@@ -3,13 +3,14 @@
 // init leds
 void DS_led_setup(){
     ledEstado = 0;
+    ledAlarma = 0;
 }
 
 // llamada en cada loop
 void DS_led_loop(){
-    led_minimo.loop();
-    led_medio.loop();
-    led_maximo.loop();
+    led_01.loop();
+    led_02.loop();
+    led_03.loop();
 }
 
 // funcion de tes de leds
@@ -18,22 +19,97 @@ void DS_led_test( int _prueba){
     if (_prueba == 0)
     {
         //test encendido
-        led_minimo.turnON();
+        Serial.println("test encendido");
+        led_01.turnON();
         delay(1000);
-        led_minimo.turnOFF();
+        led_01.turnOFF();
         delay(500);
-        led_medio.turnON();
+        led_02.turnON();
         delay(1000);
-        led_medio.turnOFF();
+        led_02.turnOFF();
         delay(500);
-        led_maximo.turnON();
+        led_03.turnON();
         delay(1000);
-        led_maximo.turnOFF();
+        led_03.turnOFF();
         delay(500);
     }
     else if (_prueba == 1)
     {
-        // test
+        // test fade in    (FALLO - aunque no es necesario por ahora   )
+        Serial.println("test fade in");
+        led_01.fade(255, 0, 2000);
+        led_02.fade(0, 255, 2000); 
+        led_03.fade(0, 255, 2000);
+        delay(15000);
+        led_01.turnOFF();
+        led_02.turnOFF();
+        led_03.turnOFF();
+    }
+    else if (_prueba == 2)
+    {
+        // test blink on, off
+        Serial.println("test blink");
+        //led_01.blink(300, 1000);
+        led_02.blink(300, 500, 0);
+        //led_03.blink(300, 500, 0);
+        delay(15000);
+        led_01.turnOFF();
+        led_02.turnOFF();
+        led_03.turnOFF();
+    }
+    else if (_prueba == 3)
+    {
+        // test blink in period
+        Serial.println("test blink in period");
+        //led_01.blinkInPeriod(250, 750, 10000);
+        //led_02.blinkInPeriod(250, 750, 10000);
+        led_03.blinkInPeriod(250, 750, 10000);
+    }
+    else if (_prueba == 4)
+    {
+        // test endender
+        Serial.println("test encender");
+        Serial.println("ledEstado = 0");
+        ledEstado = 0;
+        DS_led_encender();
+        delay(5000);
+        Serial.println("ledEstado = 1");
+        ledEstado = 1;  
+        DS_led_encender();
+        delay(5000);
+        Serial.println("ledEstado = 2");
+        ledEstado = 2;  
+        DS_led_encender();
+        delay(5000);    
+        Serial.println("ledEstado = 3");
+        ledEstado = 3;
+        DS_led_encender();
+        delay(5000);
+    }
+    else if (_prueba == 5)
+    {
+        // test alarma
+        Serial.println("test alarma");
+        Serial.println("ledAlarma = 0");
+        ledAlarma = 0;
+        DS_led_alarma();
+        delay(5000);
+        Serial.println("ledAlarma = 1");
+        ledAlarma = 1;  
+        DS_led_alarma();
+        delay(5000);
+        Serial.println("ledAlarma = 2");
+        ledAlarma = 2;  
+        DS_led_alarma();
+        delay(5000);    
+        Serial.println("ledAlarma = 3");
+        ledAlarma = 3;
+        DS_led_alarma();
+        delay(5000);
+    }
+    else
+    {
+        Serial.println("Error: prueba no valida");
     }
 }
 
@@ -41,29 +117,32 @@ void DS_led_test( int _prueba){
 void DS_led_encender()
 {
     if(ledEstado == 0){
-        led_minimo.turnON();
-        ledEstado = 1;
-        Serial.println("ledEstado = 1");
+        led_01.turnOFF();
+        led_02.turnOFF();
+        led_03.turnOFF();
     }
     else if (ledEstado == 1)
     {
-        led_medio.turnON();
-        ledEstado = 2;
-        Serial.println("ledEstado = 2");
+        led_01.turnON();
+        led_02.turnOFF();
+        led_03.turnOFF();
     }
     else if (ledEstado == 2)
     {
-        led_maximo.turnON();
-        ledEstado = 3;
-        Serial.println("ledEstado = 3");
+        led_01.turnON();
+        led_02.turnON();
+        led_03.turnOFF();
     }
     else if (ledEstado == 3)
     {
-        led_minimo.turnOFF();
-        led_medio.turnOFF();
-        led_maximo.turnOFF();
-        ledEstado = 0;
-        Serial.println("ledEstado = 0");
+        led_01.turnON();
+        led_02.turnON();
+        led_03.turnON();
+    }
+    else
+    {
+        Serial.println("Error: ledEstado no valido");
+        ledEstado = 0; // reset to default
     }
 }
 
@@ -72,22 +151,31 @@ void DS_led_alarma()
 {
     if (ledAlarma == 0)
     {
-        ledAlarma = 1;
-        Serial.println("ledAlarma = 1");
+        led_01.turnOFF();
+        led_02.turnOFF();
+        led_03.turnOFF();
     }
     else if (ledAlarma == 1)
     {
-        ledAlarma = 2;
-        Serial.println("ledAlarma = 2");
+        led_01.turnON();
+        led_02.turnOFF();
+        led_03.turnOFF();
     }
     else if (ledAlarma == 2)
     {
-        ledAlarma = 3;
-        Serial.println("ledAlarma = 3");
+        led_01.turnON();
+        led_02.turnON();
+        led_03.turnOFF();
     }
     else if (ledAlarma == 3)
     {
-        ledAlarma = 0;
-        Serial.println("ledAlarma = 0");
+        led_01.turnON();
+        led_02.turnON();
+        led_03.turnON();
+    }
+    else
+    {
+        Serial.println("Error: ledAlarma no valido");
+        ledAlarma = 0; // reset to default
     }
 }

@@ -21,9 +21,9 @@ pines conectados
 #define     PIN_BOTON_MENU      5
 
 
-#define     PIN_LED_MINIMO       7
-#define     PIN_LED_MEDIO        8       
-#define     PIN_LED_MAXIMO       9
+#define     PIN_LED_01          7
+#define     PIN_LED_02          8
+#define     PIN_LED_03          9
 
 #define     PIN_BUZZER          10
 
@@ -45,7 +45,10 @@ dSolar_lcd.hpp
 /*
 dSolar_led.hpp
 */
-
+#define    LED_APAGADO             0
+#define    LED_MINIMO              1
+#define    LED_MEDIO               2    
+#define    LED_MAXIMO              3
 
 
 /*

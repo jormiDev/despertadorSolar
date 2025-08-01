@@ -81,11 +81,11 @@ void DS_buzzer_estado()
 // cambia el volumen de la alarma 0(apagado)/1/2/3
 void DS_buzzer_volumen(int _vol)
 {
-    alarmaVolumen += _vol;
-    if (alarmaVolumen < 0)
-        alarmaVolumen = 0;
-    else if (alarmaVolumen > 3)
-        alarmaVolumen = 3;
+    alarmaMelodia += _vol;
+    if (alarmaMelodia < 0)
+        alarmaMelodia = 0;
+    else if (alarmaMelodia > 3)
+        alarmaMelodia = 3;
 
     if( _vol > 0)
         Serial.println(MENSAJE_81); 

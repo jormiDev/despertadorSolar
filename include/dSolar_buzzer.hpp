@@ -10,7 +10,7 @@ objetos y variables
 */
 extern ezBuzzer mibuzzer;
 extern int alarmaEstado;
-extern int alarmaVolumen;
+extern int alarmaMelodia;
 
 /*
 funciones

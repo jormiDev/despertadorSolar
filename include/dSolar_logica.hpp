@@ -15,7 +15,7 @@ extern int maqEstado;
 extern int maqEstadoPrevio;
 
 extern int alarmaEstado;
-extern int alarmaVolumen;
+extern int alarmaMelodia;
 
 extern ezButton boton_enter;
 extern ezButton boton_mas;
