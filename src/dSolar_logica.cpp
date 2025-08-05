@@ -127,11 +127,11 @@ void DS_logica_loop()
         if (boton_menu.isPressed())             maqEstado = 90;
         else if (boton_mas.isPressed()){
             // incremento de la volumen alarma
-            DS_buzzer_volumen(1);
+            DS_buzzer_estado(1);
         }         
         else if (boton_menos.isPressed()){
             // decremento de volumen alarma
-            DS_buzzer_volumen(-1);
+            DS_buzzer_estado(-1);
         }
     break;
 

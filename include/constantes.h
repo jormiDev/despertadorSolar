@@ -101,9 +101,8 @@ dSolar_logica.hpp
 #define     MENSAJE_76         "m++"
 #define     MENSAJE_77         "m--"
 
-#define     MENSAJE_80          "Vol. Alarma"
-#define     MENSAJE_81          "vol++"
-#define     MENSAJE_82          "vol--"
+#define     MENSAJE_80          "Melodía Alarma"
+
 
 #define     MENSAJE_90          "Salir"
 
@@ -111,10 +110,19 @@ dSolar_logica.hpp
 /*
 dSolar_buzzer.hpp
 */
+#define     MAX_MELODIA         7       // melodias totales definidas
+#define     MELODIA_00          "silencio"
+#define     MELODIA_01          "pitido simple"
+#define     MELODIA_02          "pitido largo"
+#define     MELODIA_03          "musica 1"
+#define     MELODIA_04          "musica 2"
+#define     MELODIA_05          "musica 3"
+#define     MELODIA_06          "musica 4"
+#define     MELODIA_07          "musica 5"
 
 
 /*
-dSolar_relof.hpp
+dSolar_reloj.hpp
 */
 
 

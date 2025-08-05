@@ -64,7 +64,7 @@ int maqEstadoPrevio;
 
 // dSolar_buzzer
 ezBuzzer mibuzzer(PIN_BUZZER);
-int alarmaEstado;
+bool alarmaEstado;
 int alarmaMelodia;
 
 /*
@@ -132,6 +132,7 @@ DS_boton_loop();
 DS_led_loop();
 DS_buzzer_loop();
 
+
 DS_logica_loop();
 
 /*
@@ -147,5 +148,6 @@ DS_buzzer_test(0);
 
 
 
-  //delay(500);
+  delay(10000);
+  Serial.println("delay 10000");
 }

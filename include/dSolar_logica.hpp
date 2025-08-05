@@ -14,7 +14,7 @@ objetos y variables
 extern int maqEstado;
 extern int maqEstadoPrevio;
 
-extern int alarmaEstado;
+extern bool alarmaEstado;
 extern int alarmaMelodia;
 
 extern ezButton boton_enter;
