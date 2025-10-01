@@ -66,6 +66,13 @@ int maqEstadoPrevio;
 ezBuzzer mibuzzer(PIN_BUZZER);
 bool alarmaEstado;
 int alarmaMelodia;
+int melody[] = {
+    NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_G5, NOTE_C5, NOTE_D5, NOTE_E5, NOTE_F5, NOTE_F5,
+    NOTE_F5, NOTE_F5, NOTE_F5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_D5, NOTE_D5, NOTE_E5, NOTE_D5, NOTE_G5};
+
+// note durations: 4 = quarter note, 8 = eighth note, etc, also called tempo:
+int noteDurations[] = {
+    8, 8, 4, 8, 8, 4, 8, 8, 8, 8, 2, 8, 8, 8, 8, 8, 8, 8, 16, 16, 8, 8, 8, 8, 4, 4};
 
 /*
 ********   S E T U P   ***************
@@ -113,7 +120,7 @@ void setup()
   DS_lcd_pantalla(1);
   delay(1000);
   DS_lcd_pantalla(2);
-  delay(10000);
+  delay(1000);
 
   lcd.clear();
 
@@ -131,9 +138,7 @@ void loop()
 DS_boton_loop();
 DS_led_loop();
 DS_buzzer_loop();
-
-
-DS_logica_loop();
+//DS_logica_loop();
 
 /*
 zona de test
@@ -141,13 +146,19 @@ zona de test
 
 //DS_boton_test(2);
 //DS_led_test(5);
-DS_buzzer_test(0);
+//DS_buzzer_test(4);
 
 
 
+mibuzzer.stop(); // stop any current melody
+if (mibuzzer.getState() == BUZZER_IDLE)
+{
+  Serial.println("Buzzer playMelody 1");
+  int length = sizeof(noteDurations) / sizeof(int);
+  mibuzzer.playMelody(melody, noteDurations, length); // playing
+}
 
 
-
-  delay(10000);
-  Serial.println("delay 10000");
+  delay(5000);
+  Serial.println("delay fin loop");
 }

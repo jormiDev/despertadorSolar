@@ -87,28 +87,7 @@ void DS_buzzer_canta()
         case 0:
             mibuzzer.stop();
             break;
-        case 1:
-            mibuzzer.beep(100); // pitido simple
-            break;
-        case 2:
-            mibuzzer.beep(1000); // pitido largo
-            break;
-/*         case 3:
-            mibuzzer.playMelody(melodia_1, noteDurations_1, sizeof(melodia_1) / sizeof(int)); // musica 1
-            break;
-       case 4:
-            mibuzzer.playMelody(melodia_2, noteDurations_2, sizeof(melodia_2) / sizeof(int)); // musica 2
-            break;
-        case 5:
-            mibuzzer.playMelody(melodia_3, noteDurations_3, sizeof(melodia_3) / sizeof(int)); // musica 3
-            break;
-        case 6:
-            mibuzzer.playMelody(melodia_4, noteDurations_4, sizeof(melodia_4) / sizeof(int)); // musica 4
-            break;
-        case 7:
-            mibuzzer.playMelody(melodia_5, noteDurations_5, sizeof(melodia_5) / sizeof(int)); // musica 5
-            break;
-*/
+
         default:
             mibuzzer.stop();
     }
@@ -122,7 +101,7 @@ void DS_buzzer_test(int _prueba){
 
     switch (_prueba)
     {
-    case 0:
+    case 0:{
         // test - mas/menos
         Serial.println(DS_buzzer_melodia());
         Serial.println("Buzzer Test 0 - Mas melodia");
@@ -146,24 +125,36 @@ void DS_buzzer_test(int _prueba){
         Serial.println(DS_buzzer_melodia());
 
         break;
-    case 1:
-        //test - silencia
-        mibuzzer.stop();
-            Serial.println("Buzzer Test 0 - Silencio");
-            break;
-        case 2:
-            //test - pitido simple
-            mibuzzer.beep(100);
-            Serial.println("Buzzer Test 1 - Pitido simple");
-            break;
-        case 3:
-            //test - pitido largo
-            mibuzzer.beep(1000);
-            Serial.println("Buzzer Test 2 - Pitido largo");
-            break;  
-        default:
-            Serial.println("Buzzer Test ERROR");
-            break;
+    }
+    case 1:{
+         //test - pitido simple
+        Serial.println("Buzzer Test 1 - Pitido simple");
+        mibuzzer.beep(100); // generates a 100ms beep  
 
+        break;
+    }
+    case 2:{
+        //test - pitido largo
+        Serial.println("Buzzer Test 2 - Tono simple");
+
+        break;
+    }
+    case 3:{
+        //test - melodia 1
+        Serial.println("Buzzer Test 3 - Melodia 1");
+
+        break;  
+    }
+    case 4:{
+
+
+
+        delay(10000);
+        break;
+    }
+    default:{
+        Serial.println("Buzzer Test ERROR");
+        break;
+    }
     }//switch
 }
