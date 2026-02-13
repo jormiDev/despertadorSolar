@@ -41,13 +41,20 @@ LCD 1602
 #include "dSolar_lcd.hpp"
 #include "dSolar_led.hpp"
 #include "dSolar_buzzer.hpp"
+#include "dSolar_rtc.hpp"
 
 // dSolar_logica
 int maqEstado;
 int maqEstadoPrevio;
 char entradaPorSerial = '\0';
-bool mensajeNadaMostrado = false;
-const int LED_PIN = LED_BUILTIN;
+bool mensajeUnico = false;
+int pulsado;
+
+
+
+
+
+// dSolar_rtc
 
 // dSolar_boton
 ezButton boton_enter(PIN_BOTON_ENTER);
@@ -70,7 +77,7 @@ ezLED led_03(PIN_LED_03);
 // // dSolar_buzzer
 // ezBuzzer mibuzzer(PIN_BUZZER);
 bool alarmaEstado;
-// int alarmaMelodia;
+ int alarmaMelodia;
 // int melody[] = {
 //     NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_G5, NOTE_C5, NOTE_D5, NOTE_E5, NOTE_F5, NOTE_F5,
 //     NOTE_F5, NOTE_F5, NOTE_F5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_D5, NOTE_D5, NOTE_E5, NOTE_D5, NOTE_G5};
@@ -97,12 +104,11 @@ void setup()
   // init logica
   maqEstado = 0;
   Serial.println("setup   -  Logica");
-  pinMode(LED_PIN, OUTPUT);
   Serial.println(F("Comandos validos: '+', '-', 'm', 'e'"));
-
-  //   // init botones
-  //   DS_boton_setup();
-  //   Serial.println("setup   -  Botones");
+  
+    // init botones
+    DS_boton_setup();
+    Serial.println("setup   -  Botones");
 
   //  // init leds
   //   DS_led_setup();
@@ -116,9 +122,9 @@ void setup()
   //   DS_lcd_setup();
   //   Serial.println("setup   -  LCD")     ;
 
-  //   //fin setup
-  //   Serial.println("setup   FIN");
-  //   Serial.println("");
+    //fin setup
+    Serial.println("setup   FIN");
+    Serial.println("");
 
   //   DS_lcd_pantalla(1);
   //   delay(1000);
@@ -126,6 +132,9 @@ void setup()
   //   delay(1000);
 
   //   lcd.clear();
+
+  // init rtc
+  //DS_rtc_setup();
 
   Serial.println("loop    INIT");
 }
@@ -139,9 +148,10 @@ void loop()
 
 // llamadas en cada loop  
 DS_logica_loop();
-// DS_boton_loop();
+DS_boton_loop();
 // DS_led_loop();
 // DS_buzzer_loop();
+// DS_rtc_loop();
 
 
 /*

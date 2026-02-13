@@ -18,12 +18,12 @@ void DS_buzzer_estado(bool _estado)
     if (_estado == true)
     {
         alarmaEstado = true;
-        Serial.println(MENSAJE_31); // "Alarma activada"
+        Serial.println("Alarma activada");
     }
     else
     {
-        alarmaEstado = false;
-        Serial.println(MENSAJE_32); // "Alarma desactivada"
+        alarmaEstado = false;        
+        Serial.println("Alarma desactivada");
     }
 }
 
