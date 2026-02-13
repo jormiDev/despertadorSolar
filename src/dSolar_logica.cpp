@@ -7,6 +7,67 @@ void DS_logica_setup()
     maqEstadoPrevio = 0;
 }
 
+// función para gestionar la lectura de comandos por Serial
+void gestionarLecturaSerial()
+{
+    if (Serial.available() > 0)
+    {
+        char caracterEntrante = Serial.read();
+
+        // Filtro de caracteres específicos
+        switch (caracterEntrante)
+        {
+        case '+':
+        case '-':
+        case 'm':
+        case 'e':
+            entradaPorSerial = caracterEntrante;
+            procesarComando(entradaPorSerial);
+            mensajeNadaMostrado = false; // Reset para permitir mensaje "nada" futuro
+            break;
+
+        default:
+            // Ignorar cualquier otro carácter (como saltos de línea \n o espacios)
+            break;
+        }
+    }
+    else
+    {
+        if (!mensajeNadaMostrado)
+        {
+            Serial.println(F("nada"));
+            mensajeNadaMostrado = true;
+        }
+    }
+}
+
+// función para procesar los comandos recibidos por Serial
+void procesarComando(char comando)
+{
+    Serial.print(F("recibido "));
+    Serial.println(comando);
+
+    switch (comando)
+    {
+    case '+':
+        digitalWrite(LED_PIN, HIGH);
+        Serial.println(F("Accion: Incrementando / LED ON"));
+        break;
+
+    case '-':
+        digitalWrite(LED_PIN, LOW);
+        Serial.println(F("Accion: Decrementando / LED OFF"));
+        break;
+
+    case 'm':
+        Serial.println(F("Accion: Entrando a Menu"));
+        break;
+
+    case 'e':
+        Serial.println(F("Accion: Ejecutando proceso"));
+        break;
+    }
+}
 
 // llamada en cada loop
 void DS_logica_loop()

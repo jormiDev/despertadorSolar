@@ -13,6 +13,9 @@ objetos y variables
 */
 extern int maqEstado;
 extern int maqEstadoPrevio;
+extern char entradaPorSerial;
+extern bool mensajeNadaMostrado;
+extern const int LED_PIN;
 
 extern bool alarmaEstado;
 extern int alarmaMelodia;
@@ -30,6 +33,12 @@ funciones
 */
 // init logica
 void DS_logica_setup();
+
+// lectura de la entrada por serial
+void gestionarLecturaSerial();
+
+// función para procesar los comandos recibidos por Serial
+void procesarComando(char comando);
 
 // llamada en cada loop
 void DS_logica_loop();
