@@ -28,7 +28,7 @@ LCD 1602
 #include <Arduino.h>
 
 #include "RTClib.h"
-// #include <Wire.h> 
+#include <Wire.h> 
 // #include <LiquidCrystal_I2C.h>
 
 // #include <ezLED.h>
@@ -51,11 +51,13 @@ char entradaPorSerial = '\0';
 bool mensajeUnico = false;
 int pulsado;
 
-
-
-
-
 // dSolar_rtc
+RTC_DS1307 rtcReloj;
+RTC_DS1307 rtcAlarma;
+bool setAlarma;
+
+//------------------------------------ PENDIENTE DE REPASAR ------------------------------------
+
 
 // dSolar_boton
 ezButton boton_enter(PIN_BOTON_ENTER);
@@ -72,8 +74,6 @@ int ledAlarma;
 ezLED led_01(PIN_LED_01);
 ezLED led_02(PIN_LED_02);
 ezLED led_03(PIN_LED_03);
-
-
 
 // // dSolar_buzzer
 // ezBuzzer mibuzzer(PIN_BUZZER);
@@ -106,10 +106,19 @@ void setup()
   maqEstado = 0;
   Serial.println("setup   -  Logica");
   Serial.println(F("Comandos validos: '+', '-', 'm', 'e'"));
-  
-    // init botones
-    DS_boton_setup();
-    Serial.println("setup   -  Botones");
+
+  // init rtc
+  DS_rtc_setup();
+  Serial.println("setup   -  RTC");
+  Serial.println(setAlarma ? "Alarma ACTIVADA" : "Alarma DESACTIVADA");
+  Serial.println("rtcReloj: " + String(rtcReloj.now().timestamp()));
+  Serial.println("rtcAlarma: " + String(rtcAlarma.now().timestamp()));
+
+  //------------------------------------ PENDIENTE DE REPASAR ------------------------------------
+
+  // init botones
+  DS_boton_setup();
+  Serial.println("setup   -  Botones");
 
   //  // init leds
   //   DS_led_setup();
@@ -122,11 +131,6 @@ void setup()
   //   // init LCD
   //   DS_lcd_setup();
   //   Serial.println("setup   -  LCD")     ;
-
-    //fin setup
-    Serial.println("setup   FIN");
-    Serial.println("");
-
   //   DS_lcd_pantalla(1);
   //   delay(1000);
   //   DS_lcd_pantalla(2);
@@ -134,8 +138,9 @@ void setup()
 
   //   lcd.clear();
 
-  // init rtc
-  //DS_rtc_setup();
+  //fin setup
+  Serial.println("setup   FIN");
+  Serial.println("");
 
   Serial.println("loop    INIT");
 }
@@ -149,6 +154,8 @@ void loop()
 
 // llamadas en cada loop  
 DS_logica_loop();
+DS_rtc_loop();
+
 DS_boton_loop();
 // DS_led_loop();
 // DS_buzzer_loop();

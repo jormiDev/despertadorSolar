@@ -13,7 +13,9 @@
 /*
 objetos y variables
 */
-
+extern RTC_DS1307 rtcReloj;
+extern RTC_DS1307 rtcAlarma;
+extern bool setAlarma;
 
 /*
 funciones
@@ -24,6 +26,9 @@ void DS_rtc_setup();
 
 // llamada en cada loop
 void DS_rtc_loop();
+
+// obtener hora
+String DS_rtc_getReloj();
 
 // reloj minutos ++
 void DS_rtc_relojMinutosMas();
@@ -37,6 +42,9 @@ void DS_rtc_relojHorasMas();
 // reloj horas --
 void DS_rtc_relojHorasMenos();
 
+// obtener hora alarma
+String DS_rtc_getAlarma();  
+
 // alarma minutos ++
 void DS_rtc_alarmaMinutosMas();
 
@@ -48,5 +56,8 @@ void DS_rtc_alarmaHorasMas();
 
 // alarma horas --
 void DS_rtc_alarmaHorasMenos();
+
+// revisa si es la hora de la alarma y ejecutar una acción
+void DS_rtc_alarma();
 
 #endif
