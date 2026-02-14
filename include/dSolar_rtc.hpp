@@ -3,7 +3,12 @@
 
 #include "Arduino.h"
 #include "constantes.h"
+#include "RTClib.h"
 
+// Modulo RTC HW-084 (Chip DS1307)
+//  SDA -> A4
+//  SCL -> A5
+// Librería RTClib:
 
 /*
 objetos y variables
@@ -32,6 +37,16 @@ void DS_rtc_relojHorasMas();
 // reloj horas --
 void DS_rtc_relojHorasMenos();
 
+// alarma minutos ++
+void DS_rtc_alarmaMinutosMas();
 
+// alarma minutos --
+void DS_rtc_alarmaMinutosMenos();
+
+// alarma horas ++
+void DS_rtc_alarmaHorasMas();
+
+// alarma horas --
+void DS_rtc_alarmaHorasMenos();
 
 #endif

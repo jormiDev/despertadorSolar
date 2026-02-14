@@ -27,6 +27,7 @@ LCD 1602
 
 #include <Arduino.h>
 
+#include "RTClib.h"
 // #include <Wire.h> 
 // #include <LiquidCrystal_I2C.h>
 

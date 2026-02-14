@@ -163,12 +163,12 @@ void DS_logica_loop()
     break;
 
     case 72:    //alarma horas ++
-        DS_rtc_relojHorasMas();
+        DS_rtc_alarmaHorasMas();
                                                 maqEstado = 71;
     break;
 
     case 73:    //alarma horas --
-        DS_rtc_relojHorasMenos();
+        DS_rtc_alarmaHorasMenos();
                                                 maqEstado = 71;
     break;
 
@@ -179,16 +179,14 @@ void DS_logica_loop()
     break;
 
     case 76:    //alarma horas ++
-        DS_rtc_relojMinutosMas();
+        DS_rtc_alarmaMinutosMas();
                                                 maqEstado = 75;
     break;
 
     case 77:    //alarma horas --
-        DS_rtc_relojMinutosMenos();
+        DS_rtc_alarmaMinutosMenos();
                                                 maqEstado = 75;
     break;
-
-
 
     case 80:    // configuracion alarma melodia
         if (pulsado == BOTON_MENU)             maqEstado = 90;

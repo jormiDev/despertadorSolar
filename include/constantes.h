@@ -14,6 +14,9 @@ pines conectados
 */
 #define     PIN_SDA             A4
 #define     PIN_SCL             A5
+// Modulo RTC HW-084 (Chip DS1307)
+//  SDA -> A4
+//  SCL -> A5
 
 #define     PIN_BOTON_ENTER     2
 #define     PIN_BOTON_MAS       3       
