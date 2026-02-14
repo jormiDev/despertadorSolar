@@ -10,12 +10,26 @@
 //  SCL -> A5
 // Librería RTClib:
 
+// DateTime    
+//     objeto
+//     hour()
+//     minute()
+
+// Timestamp
+//     uint32_t
+//     toString()
+//      permite comparaciones logicas (>, <, ==) con otros Timestamp o con uint32_t
+
+
+
+
 /*
 objetos y variables
 */
 extern RTC_DS1307 rtcReloj;
-extern RTC_DS1307 rtcAlarma;
+extern uint32_t rtcAlarma;
 extern bool setAlarma;
+extern bool alarmaSonando;
 
 /*
 funciones
@@ -30,6 +44,15 @@ void DS_rtc_loop();
 // obtener hora
 String DS_rtc_getReloj();
 
+// obtener hora alarma
+String DS_rtc_getAlarma();  
+
+// obtener alarma activa o no
+String DS_rtc_getEstadoAlarma();
+
+// establecer alarma
+void DS_rtc_setAlarma(bool estado);
+
 // reloj minutos ++
 void DS_rtc_relojMinutosMas();
 
@@ -41,9 +64,6 @@ void DS_rtc_relojHorasMas();
 
 // reloj horas --
 void DS_rtc_relojHorasMenos();
-
-// obtener hora alarma
-String DS_rtc_getAlarma();  
 
 // alarma minutos ++
 void DS_rtc_alarmaMinutosMas();

@@ -759,7 +759,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="waYRwfLBSZy3iyDhzvlT" name="menu - maqEstados">
-    <mxGraphModel dx="974" dy="1237" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="2336" math="0" shadow="0">
+    <mxGraphModel dx="675" dy="859" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="2336" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1255,7 +1255,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="s6gKf0F4sgo0Zj0SFs-e-60" parent="1" style="whiteSpace=wrap;html=1;rounded=0;" value="&lt;div&gt;82&amp;nbsp;&lt;/div&gt;&lt;div&gt;&lt;b style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;alarmaMelodia--&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="129" x="1550" y="870" as="geometry" />
+          <mxGeometry height="60" width="129" x="1561" y="860" as="geometry" />
         </mxCell>
         <mxCell id="s6gKf0F4sgo0Zj0SFs-e-63" edge="1" parent="1" source="s6gKf0F4sgo0Zj0SFs-e-53" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="s6gKf0F4sgo0Zj0SFs-e-60">
           <mxGeometry relative="1" as="geometry" />

@@ -40,6 +40,7 @@ void gestionarLecturaSerial()
 // llamada en cada loop
 void DS_logica_loop()
 {
+
     if (!mensajeUnico)
     {
         if (boton_enter.isPressed() || entradaPorSerial == 'e')
@@ -54,6 +55,14 @@ void DS_logica_loop()
             pulsado = BOTON_ZERO; // no button pressed
 
         mensajeUnico = true;
+
+        // mostrar estado actual reloj/alarma 
+        Serial.print("Reloj :  ");
+        Serial.print(DS_rtc_getReloj());
+        Serial.print("  -  Alarma :  ");
+        Serial.print(DS_rtc_getAlarma());
+        Serial.print("  -  ");
+        Serial.println(DS_rtc_getEstadoAlarma());
     }
     else
         pulsado = BOTON_ZERO;

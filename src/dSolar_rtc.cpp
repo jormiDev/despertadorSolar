@@ -5,8 +5,9 @@ void DS_rtc_setup()
 {
     // Alarma desactivada por defecto
     setAlarma = false;
+    alarmaSonando = false;
     
-    // Setea hora y fecha del sistema al compilar
+    // Check RTC y set reloj 00:00:00 1/1/2026 si no está corriendo
     if (!rtcReloj.begin())
     {
         Serial.println("Couldn't find RTC");
@@ -26,14 +27,9 @@ void DS_rtc_setup()
     }
 
     // Set hora de alarma a 00:00
-    if (!rtcAlarma.begin())
-    {
-        Serial.println("Couldn't find RTC");
-        Serial.flush(); 
-        while (1) delay(10);
-    }
-    rtcAlarma.adjust(DateTime(F(__DATE__), F(__TIME__)));
-    rtcAlarma.adjust(DateTime(2026, 1, 1, 0, 0, 0));
+    DateTime ahora = rtcReloj.now();
+    DateTime alarmaSet(ahora.year(), ahora.month(), ahora.day(), 0, 0, 0);
+    rtcAlarma= alarmaSet.unixtime();
 }
 
 // llamada en cada loop
@@ -53,10 +49,29 @@ String DS_rtc_getReloj()
     return ahora.toString(buffer);
 }
 
+// obtener alarma
+String DS_rtc_getAlarma()
+{
+    char buffer[] = "hh:mm";
+    return DateTime(rtcAlarma).toString(buffer);
+}
+
+// obtener alarma activa o no
+String DS_rtc_getEstadoAlarma()
+{
+    return setAlarma ? "Alarma ACTIVADA" : "Alarma DESACTIVADA";
+}
+
+// establecer alarma
+void DS_rtc_setAlarma(bool estado)
+{
+    setAlarma = estado;
+}
+
 // reloj minutos ++
 void DS_rtc_relojMinutosMas()
 {
-    Serial.println(F("reloj minutos ++"));
+    //Serial.println(F("reloj minutos ++"));
     DateTime ahora = rtcReloj.now();
     // Ciclo de 0 a 59
     int nuevoMin = (ahora.minute() + 1) % 60;
@@ -66,7 +81,7 @@ void DS_rtc_relojMinutosMas()
 // reloj minutos --
 void DS_rtc_relojMinutosMenos()
 {
-    Serial.println(F("reloj minutos --"));
+    // Serial.println(F("reloj minutos --"));
     DateTime ahora = rtcReloj.now();
     // Si es 0, pasa a 59
     int nuevoMin = (ahora.minute() == 0) ? 59 : ahora.minute() - 1;
@@ -76,7 +91,7 @@ void DS_rtc_relojMinutosMenos()
 // reloj horas ++
 void DS_rtc_relojHorasMas()
 {
-    Serial.println(F("reloj horas ++"));
+    // Serial.println(F("reloj horas ++"));
     DateTime ahora = rtcReloj.now();
     // Si es 23, pasa a 0. Si no, suma 1.
     int nuevaHora = (ahora.hour() + 1) % 24;
@@ -86,57 +101,63 @@ void DS_rtc_relojHorasMas()
 // reloj horas --
 void DS_rtc_relojHorasMenos()
 {
-    Serial.println(F("reloj horas --"));
+    // Serial.println(F("reloj horas --"));
     DateTime ahora = rtcReloj.now();
     // Si es 0, pasa a 23.
     int nuevaHora = (ahora.hour() == 0) ? 23 : ahora.hour() - 1;
     rtcReloj.adjust(DateTime(ahora.year(), ahora.month(), ahora.day(), nuevaHora, ahora.minute(), ahora.second()));
 }
 
-// obtener alarma
-String DS_rtc_getAlarma()
-{
-    DateTime ahora = rtcAlarma.now();
-    char buffer[] = "hh:mm";
-    return ahora.toString(buffer);
-}
-
 // alarma minutos ++
 void DS_rtc_alarmaMinutosMas()
 {
     Serial.println(F("alarma minutos ++"));
+    DateTime dt = DateTime(rtcAlarma);
+    int nuevoMin = (dt.minute() + 1) % 60;
+    DateTime resultado = DateTime(dt.year(), dt.month(), dt.day(), dt.hour(), nuevoMin, dt.second());
+    rtcAlarma = resultado.unixtime();
 }
 
 // alarma minutos --
 void DS_rtc_alarmaMinutosMenos()
 {
     Serial.println(F("alarma minutos --"));
+    DateTime dt = DateTime(rtcAlarma);
+    int nuevoMin = (dt.minute() == 0) ? 59 : dt.minute() - 1;
+    DateTime resultado = DateTime(dt.year(), dt.month(), dt.day(), dt.hour(), nuevoMin, dt.second());
+    rtcAlarma = resultado.unixtime();
 }
 
 // alarma horas ++
 void DS_rtc_alarmaHorasMas()
 {
     Serial.println(F("alarma horas ++"));
+    DateTime dt = DateTime(rtcAlarma);
+    int nuevaHora = (dt.hour() + 1) % 24;
+    DateTime resultado = DateTime(dt.year(), dt.month(), dt.day(), nuevaHora, dt.minute(), dt.second());
+    rtcAlarma = resultado.unixtime();
 }
 
 // alarma horas --
 void DS_rtc_alarmaHorasMenos()
 {
     Serial.println(F("alarma horas --"));
+    DateTime dt = DateTime(rtcAlarma);
+    int nuevaHora = (dt.hour() == 0) ? 23 : dt.hour() - 1;
+    DateTime resultado = DateTime(dt.year(), dt.month(), dt.day(), nuevaHora, dt.minute(), dt.second());
+    rtcAlarma = resultado.unixtime();
 }
 
 // revisa si es la hora de la alarma y ejecutar una acción
 void DS_rtc_alarma()
 {
     DateTime now = rtcReloj.now();
-    DateTime alarma = rtcAlarma.now();
     // Verificamos coincidencia exacta de hora y minuto en el segundo 0
-    if (now.hour() == alarma.hour() && 
-        now.minute() == alarma.minute() && 
-        now.second() == 0)
+    if (now == rtcAlarma)
     {
-        Serial.println(F("¡ALAAAAAARMAAAAAA!"));
-        // Aquí se pueden agregar acciones como encender un LED, activar un buzzer, etc.
+        Serial.print(F("¡ALAAAAAARMAAAAAA!  "));
+        Serial.println("Hora actual: " + now.timestamp());
+        alarmaSonando = true;
     }
 }
 

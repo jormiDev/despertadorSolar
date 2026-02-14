@@ -53,8 +53,9 @@ int pulsado;
 
 // dSolar_rtc
 RTC_DS1307 rtcReloj;
-RTC_DS1307 rtcAlarma;
+uint32_t rtcAlarma; 
 bool setAlarma;
+bool alarmaSonando;
 
 //------------------------------------ PENDIENTE DE REPASAR ------------------------------------
 
@@ -110,9 +111,9 @@ void setup()
   // init rtc
   DS_rtc_setup();
   Serial.println("setup   -  RTC");
-  Serial.println(setAlarma ? "Alarma ACTIVADA" : "Alarma DESACTIVADA");
-  Serial.println("rtcReloj: " + String(rtcReloj.now().timestamp()));
-  Serial.println("rtcAlarma: " + String(rtcAlarma.now().timestamp()));
+  Serial.println(setAlarma ? "Alarma      ACTIVADA" : "Alarma DESACTIVADA");
+  Serial.println("Reloj: " + String(rtcReloj.now().timestamp()));
+  Serial.println("Alarma: " + String(rtcAlarma));
 
   //------------------------------------ PENDIENTE DE REPASAR ------------------------------------
 
@@ -155,6 +156,8 @@ void loop()
 // llamadas en cada loop  
 DS_logica_loop();
 DS_rtc_loop();
+
+//------------------------------------ PENDIENTE DE REPASAR ------------------------------------
 
 DS_boton_loop();
 // DS_led_loop();
