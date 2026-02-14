@@ -6,6 +6,7 @@
 #include "ezButton.h"
 #include "dSolar_buzzer.hpp"
 #include "dSolar_led.hpp"
+#include "dSolar_rtc.hpp"
 
 
 /*
@@ -13,6 +14,9 @@ objetos y variables
 */
 extern int maqEstado;
 extern int maqEstadoPrevio;
+extern char entradaPorSerial;
+extern bool mensajeUnico;
+extern int pulsado;
 
 extern bool alarmaEstado;
 extern int alarmaMelodia;
@@ -30,6 +34,9 @@ funciones
 */
 // init logica
 void DS_logica_setup();
+
+// lectura de la entrada por serial
+void gestionarLecturaSerial();
 
 // llamada en cada loop
 void DS_logica_loop();

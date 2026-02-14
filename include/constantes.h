@@ -14,6 +14,9 @@ pines conectados
 */
 #define     PIN_SDA             A4
 #define     PIN_SCL             A5
+// Modulo RTC HW-084 (Chip DS1307)
+//  SDA -> A4
+//  SCL -> A5
 
 #define     PIN_BOTON_ENTER     2
 #define     PIN_BOTON_MAS       3       
@@ -70,39 +73,35 @@ dSolar_logica.hpp
 #define     MENSAJE_10          "HH:MM:SS"
 
 #define     MENSAJE_20          "Leds"
+#define     MENSAJE_21          "Led Estado:   0 / min / med / max"
 
 #define     MENSAJE_30          "Alarma"
-#define     MENSAJE_31          "activada"
-#define     MENSAJE_32          "desactivada"
+#define     MENSAJE_31          "Alarma Estado:  0 / activada"
 
 #define     MENSAJE_40          "Configuración"
 
 #define     MENSAJE_50          "Conf. Reloj"
-#define     MENSAJE_51          "Horas"
-#define     MENSAJE_52          "hh++"
-#define     MENSAJE_53          "hh--"
-#define     MENSAJE_55          "Minutos"
-#define     MENSAJE_56          "mm++"
-#define     MENSAJE_57          "mm--"
+#define     MENSAJE_51          "Reloj Horas"
+#define     MENSAJE_52          "Reloj hh++"
+#define     MENSAJE_53          "Reloj hh--"
+#define     MENSAJE_55          "Reloj Minutos"
+#define     MENSAJE_56          "Reloj mm++"
+#define     MENSAJE_57          "Reloj mm--"
 
-#define     MENSAJE_60          "Conf. Leds"
-#define     MENSAJE_61          "Leds Alarma"
-#define     MENSAJE_62          "alarma++"
-#define     MENSAJE_63          "alarma--"
-#define     MENSAJE_65          "Leds Luces"
-#define     MENSAJE_66          "luces++"
-#define     MENSAJE_67          "luces--"
+#define     MENSAJE_60          "Conf. Alarma Leds"
+#define     MENSAJE_61          "Led Alarma"
 
 #define     MENSAJE_70          "Conf. Alarma"
-#define     MENSAJE_71          "Horas"
-#define     MENSAJE_72         "h++"
-#define     MENSAJE_73         "h--"
-#define     MENSAJE_75         "Minutos"
-#define     MENSAJE_76         "m++"
-#define     MENSAJE_77         "m--"
+#define     MENSAJE_71          "Alarma Horas"
+#define     MENSAJE_72          "Alarma h++"
+#define     MENSAJE_73          "Alarma h--"
+#define     MENSAJE_75          "Alarma Minutos"
+#define     MENSAJE_76          "Alarma m++"
+#define     MENSAJE_77          "Alarma m--"
 
-#define     MENSAJE_80          "Melodía Alarma"
-
+#define     MENSAJE_80          "Conf. Alarma Melodia"
+#define     MENSAJE_81          "Alarma Melodia ++"
+#define     MENSAJE_82          "Alarma Melodia --"
 
 #define     MENSAJE_90          "Salir"
 

@@ -28,7 +28,7 @@ void DS_led_loop();
 void DS_led_test( int _prueba);
 
 // cambia la potencia de los leds 0(apagado)/1/2/3
-void DS_led_encender();
+void DS_led_estado();
 
 // cambia la potencia de los leds de la alarma 0(apagado)/1/2/3
 void DS_led_alarma();

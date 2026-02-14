@@ -21,13 +21,13 @@ void DS_boton_loop()
 // funcion queBoton - devuelve el botón pulsado o cero
 int DS_boton_queBoton()
 {
-    if (boton_enter.isPressed())
+    if (boton_enter.isPressed() || entradaPorSerial == 'e')
         return BOTON_ENTER;
-    if (boton_mas.isPressed())
+    if (boton_mas.isPressed() || entradaPorSerial == '+')
         return BOTON_MAS;
-    if (boton_menos.isPressed())
+    if (boton_menos.isPressed() || entradaPorSerial == '-')
         return BOTON_MENOS;
-    if (boton_menu.isPressed())
+    if (boton_menu.isPressed() || entradaPorSerial == 'm')
         return BOTON_MENU;
     return BOTON_ZERO; // no button pressed
 }
