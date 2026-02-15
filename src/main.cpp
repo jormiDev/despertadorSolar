@@ -47,15 +47,15 @@ LCD 1602
 // dSolar_logica
 int maqEstado;
 int maqEstadoPrevio;
-char entradaPorSerial = '\0';
-bool mensajeUnico = false;
-int pulsado;
+char entradaPorSerial = '\0';   // para almacenar la última entrada recibida por Serial (comandos '+', '-', 'm', 'e')
+bool mensajeUnico = false;      // para evitar mostrar el estado varias veces al detectar un mismo pulsado (por ejemplo, el mismo botón presionado durante varios loops o la misma entrada por serial)
+int pulsado;                    // 0 = no button pressed, 1 = boton enter, 2 = boton mas, 3 = boton menos, 4 = boton menu
 
 // dSolar_rtc
-RTC_DS1307 rtcReloj;
-uint32_t rtcAlarma; 
-bool setAlarma;
-bool alarmaSonando;
+RTC_DS1307 rtcReloj;            // objeto para gestionar el reloj RTC
+uint32_t rtcAlarma;             //  almacena la hora de la alarma como timestamp (uint32_t) para facilitar comparaciones lógicas con la hora actual del reloj (DateTime.now() convertido a timestamp)
+bool setAlarma;                 // indica si la alarma está activada o no
+bool alarmaSonando;             // indica si la alarma está sonando actualmente
 
 //------------------------------------ PENDIENTE DE REPASAR ------------------------------------
 

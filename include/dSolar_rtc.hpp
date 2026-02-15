@@ -30,6 +30,9 @@ extern RTC_DS1307 rtcReloj;
 extern uint32_t rtcAlarma;
 extern bool setAlarma;
 extern bool alarmaSonando;
+extern int pulsado;
+extern int ledAlarma;
+
 
 /*
 funciones
@@ -79,5 +82,8 @@ void DS_rtc_alarmaHorasMenos();
 
 // revisa si es la hora de la alarma y ejecutar una acción
 void DS_rtc_alarma();
+
+// revisa si apagar la alarma en el caso que este encendida
+void DS_rtc_alarmaApagar();
 
 #endif

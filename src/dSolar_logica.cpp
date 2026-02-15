@@ -41,6 +41,7 @@ void gestionarLecturaSerial()
 void DS_logica_loop()
 {
 
+    // gestionar lectura por Serial
     if (!mensajeUnico)
     {
         if (boton_enter.isPressed() || entradaPorSerial == 'e')
@@ -55,17 +56,12 @@ void DS_logica_loop()
             pulsado = BOTON_ZERO; // no button pressed
 
         mensajeUnico = true;
-
-        // mostrar estado actual reloj/alarma 
-        Serial.print("Reloj :  ");
-        Serial.print(DS_rtc_getReloj());
-        Serial.print("  -  Alarma :  ");
-        Serial.print(DS_rtc_getAlarma());
-        Serial.print("  -  ");
-        Serial.println(DS_rtc_getEstadoAlarma());
     }
     else
         pulsado = BOTON_ZERO;
+    
+    // gestionar apagado alarma
+    DS_rtc_alarmaApagar();  
 
     maqEstadoPrevio = maqEstado;
 
@@ -225,7 +221,21 @@ void DS_logica_loop()
 
     // si cambia el estado mostrar el nuevo por serial
     if( maqEstado != maqEstadoPrevio)
+    {
         DS_logica_muestraEstado();
+        
+        // mostrar estado actual reloj/alarma
+        Serial.print("Reloj :  ");
+        Serial.print(DS_rtc_getReloj());
+        Serial.print("  -  Alarma :  ");
+        Serial.print(DS_rtc_getAlarma());
+        Serial.print("  -  ");
+        Serial.print(DS_rtc_getEstadoAlarma());
+        Serial.print("  -  ledsAlarma (0/1/2/3) :  ");
+        Serial.print(ledAlarma);
+        Serial.print("  -  alarmaSonando :  ");
+        Serial.println(alarmaSonando);
+    }
 }
 
 

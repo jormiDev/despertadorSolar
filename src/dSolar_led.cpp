@@ -148,28 +148,28 @@ void DS_led_estado()
 }
 
 // cambia la potencia de los leds de la alarma 0(apagado)/1(min)/2(med)/3(max)
-void DS_led_alarma()
+void DS_led_alarma()    //OK CHECK FEB2026
 {
     if (ledAlarma == 0)
     {
         ledAlarma++;
         DS_rtc_setAlarma(true);
-        Serial.println("Alarma activada - led MINIMO");
+        Serial.println("ledAlarma :  MINIMO");
     }
     else if (ledAlarma == 1)
     {
         ledAlarma++;
-        Serial.println("Alarma activada - led MEDIO");
+        Serial.println("ledAlarma :  MEDIO");
     }
     else if (ledAlarma == 2)
     {
         ledAlarma++;
-        Serial.println("Alarma activada - led MAXIMO");
+        Serial.println("ledAlarma :  MAXIMO");
     }
     else if (ledAlarma == 3)
     {
         ledAlarma = 0;
-        Serial.println("Alarma desactivada");
+        DS_rtc_setAlarma(false);
     }
     else
     {

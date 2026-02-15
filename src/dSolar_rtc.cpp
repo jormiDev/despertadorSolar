@@ -66,6 +66,7 @@ String DS_rtc_getEstadoAlarma()
 void DS_rtc_setAlarma(bool estado)
 {
     setAlarma = estado;
+    Serial.println(setAlarma ? "Alarma ACTIVADA" : "Alarma DESACTIVADA");
 }
 
 // reloj minutos ++
@@ -152,12 +153,35 @@ void DS_rtc_alarmaHorasMenos()
 void DS_rtc_alarma()
 {
     DateTime now = rtcReloj.now();
+    DateTime alarma = DateTime(rtcAlarma);
+
     // Verificamos coincidencia exacta de hora y minuto en el segundo 0
-    if (now == rtcAlarma)
+    if (now.hour() == alarma.hour() && now.minute() == alarma.minute() && setAlarma == true && alarmaSonando == false)
     {
-        Serial.print(F("¡ALAAAAAARMAAAAAA!  "));
-        Serial.println("Hora actual: " + now.timestamp());
         alarmaSonando = true;
+        setAlarma = false; // Desactivamos la alarma para que no vuelva a sonar hasta que se vuelva a activar
+        // encender leds
+        // activar buzzer
+        // mostrar mensaje en LCD
+
+        Serial.print(F("¡ALAAAAAARMAAAAAA!  "));
+        Serial.print("Hora actual: " + now.timestamp());
+        Serial.println(alarmaSonando ? "Alarma SONANDO" : "Alarma DESACTIVADA");
     }
 }
 
+// revisa si apagar la alarma en el caso que este encendida
+void DS_rtc_alarmaApagar()
+{
+    if (pulsado != BOTON_ZERO && alarmaSonando == true){
+        // apagar leds
+        // desactivar buzzer
+        // mostrar mensaje en LCD
+        alarmaSonando = false;
+        setAlarma = false;
+        ledAlarma = 0;
+        pulsado = BOTON_ZERO;
+        Serial.println(alarmaSonando ? "Alarma SONANDO" : "Alarma DESACTIVADA");
+    }
+
+}
