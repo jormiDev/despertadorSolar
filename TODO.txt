@@ -31,7 +31,10 @@ DS_led
     OK  ledAlarma
 
 DS_boton
-
+    ok  DS_boton_setup
+    OK  DS_boton_loop
+    OK  DS_boton_test
+    OK  ----Libreria----
 DS_buzzer
 
 DS_lcd

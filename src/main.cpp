@@ -153,25 +153,24 @@ void setup()
 void loop()
 {
 
-// llamadas en cada loop  
-DS_logica_loop();
+// test
+// DS_boton_test(0);
+
+// lectura por Serial - para permitir control por Serial además de por botones físicos (comandos '+', '-', 'm', 'e')
+gestionarLecturaSerial();
+
+// loop  
+DS_boton_loop();
 DS_rtc_loop();
+
+DS_rtc_alarmaApagar(); // gestionar apagado alarma
+
+DS_logica_loop(); // logica de la máquina de estados  
+
 
 //------------------------------------ PENDIENTE DE REPASAR ------------------------------------
 
-DS_boton_loop();
 // DS_led_loop();
 // DS_buzzer_loop();
-// DS_rtc_loop();
-
-
-/*
-zona de test
-*/
-
-
-// loop
-gestionarLecturaSerial();
-
 
 }

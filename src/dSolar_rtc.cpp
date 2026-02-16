@@ -10,9 +10,9 @@ void DS_rtc_setup()
     // Check RTC y set reloj 00:00:00 1/1/2026 si no está corriendo
     if (!rtcReloj.begin())
     {
-        Serial.println("Couldn't find RTC");
-        Serial.flush();
-        while (1) delay(10);
+        Serial.println(F("ERROR: No se encuentra el RTC. Revisar cableado I2C."));
+        // En lugar de while(1), podrías usar una bandera de error
+        return;
     }
 
     if (!rtcReloj.isrunning())
