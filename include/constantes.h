@@ -80,7 +80,7 @@ dSolar_logica.hpp
 
 #define     MENSAJE_40          "Configuración"
 
-#define     MENSAJE_50          "Conf. Reloj"
+#define     MENSAJE_50          "Conf. Hora Reloj"
 #define     MENSAJE_51          "Reloj Horas"
 #define     MENSAJE_52          "Reloj hh++"
 #define     MENSAJE_53          "Reloj hh--"
@@ -88,10 +88,10 @@ dSolar_logica.hpp
 #define     MENSAJE_56          "Reloj mm++"
 #define     MENSAJE_57          "Reloj mm--"
 
-#define     MENSAJE_60          "Conf. Alarma Leds"
+#define     MENSAJE_60          "Conf. Potencia Leds (0=OFF, 1=min, 2=med, 3=max)"
 #define     MENSAJE_61          "Led Alarma"
 
-#define     MENSAJE_70          "Conf. Alarma"
+#define     MENSAJE_70          "Conf. Hora Alarma"
 #define     MENSAJE_71          "Alarma Horas"
 #define     MENSAJE_72          "Alarma h++"
 #define     MENSAJE_73          "Alarma h--"

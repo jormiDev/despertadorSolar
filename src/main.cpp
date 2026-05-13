@@ -28,7 +28,7 @@ LCD 1602
 #include <Arduino.h>
 
 #include "RTClib.h"
-// #include <Wire.h> 
+#include <Wire.h> 
 // #include <LiquidCrystal_I2C.h>
 
 // #include <ezLED.h>
@@ -47,15 +47,18 @@ LCD 1602
 // dSolar_logica
 int maqEstado;
 int maqEstadoPrevio;
-char entradaPorSerial = '\0';
-bool mensajeUnico = false;
-int pulsado;
-
-
-
-
+char entradaPorSerial = '\0';   // para almacenar la última entrada recibida por Serial (comandos '+', '-', 'm', 'e')
+bool mensajeUnico = false;      // para evitar mostrar el estado varias veces al detectar un mismo pulsado (por ejemplo, el mismo botón presionado durante varios loops o la misma entrada por serial)
+int pulsado;                    // 0 = no button pressed, 1 = boton enter, 2 = boton mas, 3 = boton menos, 4 = boton menu
 
 // dSolar_rtc
+RTC_DS1307 rtcReloj;            // objeto para gestionar el reloj RTC
+uint32_t rtcAlarma;             //  almacena la hora de la alarma como timestamp (uint32_t) para facilitar comparaciones lógicas con la hora actual del reloj (DateTime.now() convertido a timestamp)
+bool setAlarma;                 // indica si la alarma está activada o no
+bool alarmaSonando;             // indica si la alarma está sonando actualmente
+
+//------------------------------------ PENDIENTE DE REPASAR ------------------------------------
+
 
 // dSolar_boton
 ezButton boton_enter(PIN_BOTON_ENTER);
@@ -72,8 +75,6 @@ int ledAlarma;
 ezLED led_01(PIN_LED_01);
 ezLED led_02(PIN_LED_02);
 ezLED led_03(PIN_LED_03);
-
-
 
 // // dSolar_buzzer
 // ezBuzzer mibuzzer(PIN_BUZZER);
@@ -106,10 +107,19 @@ void setup()
   maqEstado = 0;
   Serial.println("setup   -  Logica");
   Serial.println(F("Comandos validos: '+', '-', 'm', 'e'"));
-  
-    // init botones
-    DS_boton_setup();
-    Serial.println("setup   -  Botones");
+
+  // init rtc
+  DS_rtc_setup();
+  Serial.println("setup   -  RTC");
+  Serial.println(setAlarma ? "Alarma      ACTIVADA" : "Alarma DESACTIVADA");
+  Serial.println("Reloj: " + String(rtcReloj.now().timestamp()));
+  Serial.println("Alarma: " + String(rtcAlarma));
+
+  //------------------------------------ PENDIENTE DE REPASAR ------------------------------------
+
+  // init botones
+  DS_boton_setup();
+  Serial.println("setup   -  Botones");
 
   //  // init leds
   //   DS_led_setup();
@@ -122,11 +132,6 @@ void setup()
   //   // init LCD
   //   DS_lcd_setup();
   //   Serial.println("setup   -  LCD")     ;
-
-    //fin setup
-    Serial.println("setup   FIN");
-    Serial.println("");
-
   //   DS_lcd_pantalla(1);
   //   delay(1000);
   //   DS_lcd_pantalla(2);
@@ -134,8 +139,9 @@ void setup()
 
   //   lcd.clear();
 
-  // init rtc
-  //DS_rtc_setup();
+  //fin setup
+  Serial.println("setup   FIN");
+  Serial.println("");
 
   Serial.println("loop    INIT");
 }
@@ -147,21 +153,24 @@ void setup()
 void loop()
 {
 
-// llamadas en cada loop  
-DS_logica_loop();
-DS_boton_loop();
-// DS_led_loop();
-// DS_buzzer_loop();
-// DS_rtc_loop();
+// test
+// DS_boton_test(0);
 
-
-/*
-zona de test
-*/
-
-
-// loop
+// lectura por Serial - para permitir control por Serial además de por botones físicos (comandos '+', '-', 'm', 'e')
 gestionarLecturaSerial();
 
+// loop  
+DS_boton_loop();
+DS_rtc_loop();
+
+DS_rtc_alarmaApagar(); // gestionar apagado alarma
+
+DS_logica_loop(); // logica de la máquina de estados  
+
+
+//------------------------------------ PENDIENTE DE REPASAR ------------------------------------
+
+// DS_led_loop();
+// DS_buzzer_loop();
 
 }

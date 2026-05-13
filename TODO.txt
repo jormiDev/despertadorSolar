@@ -1,0 +1,40 @@
+
+
+
+
+----------------- Pendiente -----------------------
+DS_ - configurar maqEstado 80, 81, 82
+
+DS_ - maqEstado 10
+
+DS_ - maqEstado 20/21
+
+DS_ - maqEstado 30/31
+
+
+----------------- Librerias -----------------------
+
+DS_logica
+
+
+DS_rtc
+    DS_rtc_alarma
+        // encender leds
+        // activar buzzer
+        // mostrar mensaje en LCD
+    DS_rtc_alarmaApagar
+        // apagar leds
+        // desactivar buzzer
+        // mostrar mensaje en LCD
+
+DS_led
+    OK  ledAlarma
+
+DS_boton
+    ok  DS_boton_setup
+    OK  DS_boton_loop
+    OK  DS_boton_test
+    OK  ----Libreria----
+DS_buzzer
+
+DS_lcd
