@@ -57,9 +57,6 @@ void DS_buzzer_melodia_menos()
     Serial.println(alarmaMelodia);
 }
 
-
-
-
 // cambia la melodia de la alarma
 void DS_buzzer_melodia(int _melodia)
 {
@@ -97,55 +94,80 @@ void DS_buzzer_canta()
 // funcion de test de buzzer
 void DS_buzzer_test(int _prueba){
     int i;
-    int test_estado;
 
     switch (_prueba)
     {
     case 0:{
-        // test - mas/menos
-        Serial.println(DS_buzzer_melodia());
+        // test - mas
         Serial.println("Buzzer Test 0 - Mas melodia");
-        for (i = 0; i < 10; i++)
-           DS_buzzer_melodia_mas();
-
-        delay(10000);
-        Serial.println(DS_buzzer_melodia());
-        Serial.println("Buzzer Test 0 - Menos melodia");
-        Serial.println(test_estado);
-
-        for (i = 10; i >= -1; i--)
-           DS_buzzer_melodia_menos();
-
-        Serial.println(DS_buzzer_melodia());
-        Serial.println("Buzzer Test 0 - set 4");
-        DS_buzzer_melodia(4);
-        Serial.println(DS_buzzer_melodia());
-        Serial.println("Buzzer Test 0 - set 25");
-        DS_buzzer_melodia(25);
-        Serial.println(DS_buzzer_melodia());
-
-        break;
+        for (i = 0; i < 20; i++){
+            DS_buzzer_melodia_mas();
+            delay(1000);
+            Serial.println(DS_buzzer_melodia());
+            delay(1000);
+        }
+    break;
     }
     case 1:{
+        // test - menos
+        for (i = 0; i < 20; i++)
+        {
+            DS_buzzer_melodia_menos();
+            delay(1000);
+            Serial.println(DS_buzzer_melodia());
+            delay(1000);
+            break;
+        }
+    break;
+    }
+    case 2:{
+         //test - set melodia
+        Serial.println(DS_buzzer_melodia());
+        delay(1000);
+        Serial.println("Buzzer Test 0 - set 4");
+        DS_buzzer_melodia(4);
+        delay(1000);
+        Serial.println(DS_buzzer_melodia());
+        delay(1000);
+        Serial.println("Buzzer Test 0 - set 25");
+        DS_buzzer_melodia(25);
+        delay(1000);
+        Serial.println(DS_buzzer_melodia());
+        delay(1000);
+    break;
+    }
+    case 3:{
          //test - pitido simple
         Serial.println("Buzzer Test 1 - Pitido simple");
         mibuzzer.beep(100); // generates a 100ms beep  
 
         break;
     }
-    case 2:{
+    case 4:{
         //test - pitido largo
         Serial.println("Buzzer Test 2 - Tono simple");
 
         break;
     }
-    case 3:{
-        //test - melodia 1
-        Serial.println("Buzzer Test 3 - Melodia 1");
+    case 5:{
+        //test - activar / desactivar alarma
+        Serial.println("Buzzer Test 3 - Activar / Desactivar alarma");
+        Serial.println("Activar alarma");
+        DS_buzzer_estado(true);
+        delay(3000);
+        Serial.println("Alarma estado: " + String(DS_buzzer_estado()));
+        delay(3000);
+        Serial.println("Desactivar alarma");
+        DS_buzzer_estado(false);
+        delay(3000);
+        Serial.println("Alarma estado: " + String(DS_buzzer_estado()));
+        delay(3000);
 
         break;  
     }
-    case 4:{
+    case 6:{
+        //test - melodia 1
+        Serial.println("Buzzer Test 3 - Melodia 0");
 
 
 

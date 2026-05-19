@@ -13,6 +13,7 @@ extern ezButton boton_mas;
 extern ezButton boton_menos;
 extern ezButton boton_menu;
 extern char entradaPorSerial;
+extern char entradaPorBoton;
 
 /*
 funciones

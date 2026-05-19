@@ -8,7 +8,7 @@ void DS_logica_setup()
 }
 
 // función para gestionar la lectura de comandos por Serial
-void gestionarLecturaSerial()
+void DS_logica_gestionarLecturaSerial()
 {
     if (Serial.available() > 0)
     {
@@ -24,7 +24,6 @@ void gestionarLecturaSerial()
             entradaPorSerial = caracterEntrante;
             Serial.print(F("recibido "));
             Serial.println(entradaPorSerial);
-            mensajeUnico = false;   // Reset para permitir mostrar mensaje unico
             break;
 
         default:
@@ -40,23 +39,30 @@ void gestionarLecturaSerial()
 // llamada en cada loop
 void DS_logica_loop()
 {
-    if (!mensajeUnico)
-    {
-        if (boton_enter.isPressed() || entradaPorSerial == 'e')
-            pulsado = BOTON_ENTER;
-        else if (boton_mas.isPressed() || entradaPorSerial == '+')
-            pulsado = BOTON_MAS;
-        else if (boton_menos.isPressed() || entradaPorSerial == '-')
-            pulsado =  BOTON_MENOS;
-        else if (boton_menu.isPressed() || entradaPorSerial == 'm')
-            pulsado =  BOTON_MENU;
-        else 
-            pulsado = BOTON_ZERO; // no button pressed
-
-        mensajeUnico = true;
+      if ( entradaPorSerial == 'e' || entradaPorBoton == 'e'){
+        pulsado = BOTON_ENTER;
+        entradaPorSerial = '\0'; // Limpiar la entrada por Serial después de procesarla
+        entradaPorBoton = '\0';  // Limpiar la entrada por Botón después
     }
+    else if ( entradaPorSerial == '+' || entradaPorBoton == '+'){
+        pulsado = BOTON_MAS;
+        entradaPorSerial = '\0';
+        entradaPorBoton = '\0';
+    }
+    else if ( entradaPorSerial == '-' || entradaPorBoton == '-')
+    {
+        pulsado =  BOTON_MENOS;
+        entradaPorSerial = '\0';
+        entradaPorBoton = '\0';
+    }
+    else if ( entradaPorSerial == 'm' || entradaPorBoton == 'm')
+    {
+        pulsado =  BOTON_MENU;
+        entradaPorSerial = '\0';
+        entradaPorBoton = '\0';
+    }   
     else
-        pulsado = BOTON_ZERO;
+        pulsado = BOTON_ZERO; // no button pressed
 
     maqEstadoPrevio = maqEstado;
 
@@ -220,7 +226,7 @@ void DS_logica_loop()
 }
 
 
-// muestra el estado actual por Serial
+// muestra maquinaEstado actual por Serial
 void DS_logica_muestraEstado()
 {
     Serial.print("maqEstado  ");
