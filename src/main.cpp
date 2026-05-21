@@ -28,12 +28,11 @@ LCD 1602
 #include <Arduino.h>
 
 #include "RTClib.h"
-// #include <Wire.h> 
-// #include <LiquidCrystal_I2C.h>
-
 #include <ezLED.h>
 #include <ezButton.h>
 #include <ezBuzzer.h>
+// #include <Wire.h> 
+// #include <LiquidCrystal_I2C.h>
 
 #include "constantes.h"
 
@@ -57,18 +56,6 @@ ezLED led_01(PIN_LED_01);
 ezLED led_02(PIN_LED_02);
 ezLED led_03(PIN_LED_03);
 
-// dSolar_buzzer
-ezBuzzer mibuzzer(PIN_BUZZER);
-bool alarmaEstado;
-int alarmaMelodia;
-int melody[] = {
-    NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_G5, NOTE_C5, NOTE_D5, NOTE_E5, NOTE_F5, NOTE_F5,
-    NOTE_F5, NOTE_F5, NOTE_F5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_D5, NOTE_D5, NOTE_E5, NOTE_D5, NOTE_G5};
-
-// note durations: 4 = quarter note, 8 = eighth note, etc, also called tempo:
-int noteDurations[] = {
-    8, 8, 4, 8, 8, 4, 8, 8, 8, 8, 2, 8, 8, 8, 8, 8, 8, 8, 16, 16, 8, 8, 8, 8, 4, 4};
-
 // dSolar_logica
 int maqEstado;
 int maqEstadoPrevio;
@@ -76,6 +63,70 @@ char entradaPorSerial = '\0';
 char entradaPorBoton = '\0';
 int pulsado;
 
+// dSolar_buzzer
+// Duración de la nota: 16 significa una semicorchea (un pitido muy corto y rápido)
+// Si lo quieres un poco más largo, puedes cambiarlo por 8 o 4.
+ezBuzzer mibuzzer(PIN_BUZZER, BUZZER_TYPE_ACTIVE, HIGH);
+bool alarmaEstado;
+int alarmaMelodia;
+static unsigned long mibuzzer_ultVez;      //millis del ultimo pitido para no saturar el buzzer
+
+// pitido simple
+int MELODIA_01_not[] = {NOTE_E5};
+int MELODIA_01_dur[] = {16};
+int MELODIA_01_longitud = sizeof(MELODIA_01_dur) / sizeof(int);
+
+// pitido largo
+int MELODIA_02_not[] = {NOTE_E5};       
+int MELODIA_02_dur[] = {16};
+int MELODIA_02_longitud = sizeof(MELODIA_02_dur) / sizeof(int);
+
+// "Golden" (KPop Demon Hunters)
+int MELODIA_03_not[] = {
+    // --- FASE 1: El sintetizador místico (0-10s) ---
+    NOTE_E5, NOTE_G5, NOTE_B5, NOTE_E6,     NOTE_D6, NOTE_B5, NOTE_G5, NOTE_E5,
+    NOTE_A5, NOTE_B5, NOTE_C6, NOTE_E6,     NOTE_D6, NOTE_B5, NOTE_A5, NOTE_G5,
+    NOTE_E5, NOTE_G5, NOTE_B5, NOTE_E6,     NOTE_D6, NOTE_B5, NOTE_G5, NOTE_E5,
+    // --- FASE 2: El redoble que sube la tensión (10-20s) ---
+    NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5,     NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5,
+    NOTE_F5, NOTE_F5, NOTE_F5, NOTE_F5,     NOTE_G5, NOTE_G5, NOTE_A5, NOTE_B5,
+    // --- FASE 3: ¡El Impacto / Drop! (20-30s) ---
+    NOTE_E6, NOTE_D6, NOTE_E6 // ¡BOOM! Notas potentes y largas
+};
+int MELODIA_03_dur[] = {
+    // Fase 1: Notas fluidas pero pausadas (8 = Corcheas)
+    8, 8, 8, 8,     8, 8, 8, 8,
+    8, 8, 8, 8,     8, 8, 8, 8,
+    8, 8, 8, 8,     8, 8, 8, 8,
+
+    // Fase 2: El redoble empieza normal y se acelera (16 = Semicorcheras)
+    8, 8, 8, 8,     16, 16, 16, 16,
+    16, 16, 16, 16,     16, 16, 16, 16,
+
+    // Fase 3: Notas pesadas y largas (2 = Blancas, duran bastante más)
+    2, 4, 1
+};
+int MELODIA_03_longitud = sizeof(MELODIA_03_dur) / sizeof(int);
+
+// pitido simple
+int MELODIA_04_not[] = {NOTE_E5};
+int MELODIA_04_dur[] = {16};
+int MELODIA_04_longitud = sizeof(MELODIA_04_dur) / sizeof(int);
+
+// pitido simple
+int MELODIA_05_not[] = {NOTE_E5};
+int MELODIA_05_dur[] = {16};
+int MELODIA_05_longitud = sizeof(MELODIA_05_dur) / sizeof(int);
+
+// pitido simple
+int MELODIA_06_not[] = {NOTE_E5};
+int MELODIA_06_dur[] = {16};
+int MELODIA_06_longitud = sizeof(MELODIA_06_dur) / sizeof(int);
+
+// pitido simple
+int MELODIA_07_not[] = {NOTE_E5};
+int MELODIA_07_dur[] = {16};
+int MELODIA_07_longitud = sizeof(MELODIA_07_dur) / sizeof(int);
 
 /*    test pendiente      */
 
@@ -163,18 +214,22 @@ DS_buzzer_loop();
 /*
 zona de test
 */
-//DS_boton_test(0);
+//DS_boton_test(0); ok
 //DS_boton_test(1); ok
 //DS_boton_test(2); ok
-//DS_led_test(0); ok
-//DS_led_test(1);  NOT ok
-//DS_led_test(2); NOT ok
-//DS_led_test(3); NOT ok
-//DS_led_test(4); ok
-//DS_led_test(5); ok
-//DS_buzzer_test(0); ok
-//DS_buzzer_test(1); ok
-//DS_buzzer_test(2); ok
-//DS_buzzer_test(3); 
+//DS_led_test(0);   ok
+//DS_led_test(1);   NOT ok
+//DS_led_test(2);   NOT ok
+//DS_led_test(3);   NOT ok
+//DS_led_test(4);   ok
+//DS_led_test(5);   ok
+// DS_buzzer_test(0); ok
+// DS_buzzer_test(1); ok
+// DS_buzzer_test(2); ok
+// DS_buzzer_test(3); ok
+// DS_buzzer_test(4); ok
+// DS_buzzer_test(5); ok
+DS_buzzer_test(6);
 
-}
+
+}//fin loop

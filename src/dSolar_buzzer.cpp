@@ -3,7 +3,10 @@
 // init buzzer
 void DS_buzzer_setup()
 {
-    alarmaEstado = false;
+    alarmaEstado = false;   //  alarma inicialmente desactivada
+    alarmaMelodia = 0;      // set alarma inicial
+    mibuzzer.stop();        // Aseguramos que el buzzer esté apagado al inicio
+    mibuzzer_ultVez = 0;    // Inicializamos el tiempo del último pitido
 }
 
 // llamada en cada loop
@@ -79,12 +82,35 @@ int DS_buzzer_melodia()
 // ejecuta la melodia de la alarma
 void DS_buzzer_canta()
 {
+    //esperar 10 seg para no saturar el buzzer
+
     switch (alarmaMelodia)
     {
         case 0:
             mibuzzer.stop();
             break;
 
+        case 1:
+            mibuzzer.playMelody(MELODIA_01_not, MELODIA_01_dur, MELODIA_01_longitud);
+            break;  
+        case 2:
+            mibuzzer.playMelody(MELODIA_02_not, MELODIA_02_dur, MELODIA_02_longitud);
+            break;  
+        case 3:
+            mibuzzer.playMelody(MELODIA_03_not, MELODIA_03_dur, MELODIA_03_longitud);
+            break;  
+        case 4:
+            mibuzzer.playMelody(MELODIA_04_not, MELODIA_04_dur, MELODIA_04_longitud);
+            break;
+        case 5:
+            mibuzzer.playMelody(MELODIA_05_not, MELODIA_05_dur, MELODIA_05_longitud);
+            break;
+        case 6:
+            mibuzzer.playMelody(MELODIA_06_not, MELODIA_06_dur, MELODIA_06_longitud);
+            break;
+        case 7:
+            mibuzzer.playMelody(MELODIA_07_not, MELODIA_07_dur, MELODIA_07_longitud);
+            break;
         default:
             mibuzzer.stop();
     }
@@ -137,21 +163,48 @@ void DS_buzzer_test(int _prueba){
     break;
     }
     case 3:{
-         //test - pitido simple
-        Serial.println("Buzzer Test 1 - Pitido simple");
-        mibuzzer.beep(100); // generates a 100ms beep  
+        // test - pitido simple emulado mediante playMelody()
+        static unsigned long ultimoPitido = 0;
+        unsigned long tiempoActual = millis();
 
+        // Ejecutamos la prueba una vez cada 3 segundos de forma no bloqueante
+        if (tiempoActual - ultimoPitido >= 3000)
+        {
+            ultimoPitido = tiempoActual;
+
+            Serial.println("Buzzer Test 3 - Pitido corto con playMelody");
+
+             // Aseguramos que el buzzer esté libre antes de reproducir
+            if (mibuzzer.getState() == BUZZER_IDLE)
+            {
+                mibuzzer.playMelody(MELODIA_01_not, MELODIA_01_dur, MELODIA_01_longitud);
+            }
+        }
         break;
     }
     case 4:{
-        //test - pitido largo
-        Serial.println("Buzzer Test 2 - Tono simple");
+        // test - pitido simple emulado mediante playMelody()
+        static unsigned long ultimoPitido = 0;
+        unsigned long tiempoActual = millis();
 
+        // Ejecutamos la prueba una vez cada 3 segundos de forma no bloqueante
+        if (tiempoActual - ultimoPitido >= 3000)
+        {
+            ultimoPitido = tiempoActual;
+
+            Serial.println("Buzzer Test 4 - Pitido largo con playMelody");
+
+            // Aseguramos que el buzzer esté libre antes de reproducir
+            if (mibuzzer.getState() == BUZZER_IDLE)
+            {
+                mibuzzer.playMelody(MELODIA_02_not, MELODIA_02_dur, MELODIA_02_longitud);
+            }
+        }
         break;
     }
     case 5:{
         //test - activar / desactivar alarma
-        Serial.println("Buzzer Test 3 - Activar / Desactivar alarma");
+        Serial.println("Buzzer Test 5 - Activar / Desactivar alarma");
         Serial.println("Activar alarma");
         DS_buzzer_estado(true);
         delay(3000);
@@ -166,16 +219,31 @@ void DS_buzzer_test(int _prueba){
         break;  
     }
     case 6:{
-        //test - melodia 1
-        Serial.println("Buzzer Test 3 - Melodia 0");
+        // test - melodia
+        //  test - Melodía del estribillo de "Golden" (KPop Demon Hunters)
+        static unsigned long ultimoPitido = 0;
+        unsigned long tiempoActual = millis();
+
+        // Se reproduce la canción una vez cada 10 segundos para no saturar
+        if (tiempoActual - ultimoPitido >= 10000)
+        {
+            ultimoPitido = tiempoActual;
+
+            Serial.println("Buzzer Test 6 - ezbuzzer melodia");
 
 
-
-        delay(10000);
+            // Si el buzzer no está haciendo nada, ¡que empiece el show!
+            if (mibuzzer.getState() == BUZZER_IDLE)
+            {
+                mibuzzer.playMelody(MELODIA_03_not, MELODIA_03_dur, MELODIA_03_longitud);
+            }
+        }
         break;
     }
-    default:{
-        Serial.println("Buzzer Test ERROR");
+    case 7:{
+        // test - canta
+        Serial.println("Buzzer Test 7 - Canta");
+        DS_buzzer_canta();
         break;
     }
     }//switch
