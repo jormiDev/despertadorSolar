@@ -25,9 +25,8 @@ void DS_boton_setup();
 // llamada en cada loop
 void DS_boton_loop();
 
-// ****** FUNCION ELIMINADA POR SER INNECESARIA
 // funcion queBoton - devuelve el botón pulsado o cero
-// int DS_boton_queBoton();
+int DS_boton_queBoton();
 
 // funcion de test de botones
 void DS_boton_test(int _prueba);

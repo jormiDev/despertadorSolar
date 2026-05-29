@@ -1,5 +1,4 @@
 #include "dSolar_led.hpp"
-#include "dSolar_rtc.hpp"
 
 // init leds
 void DS_led_setup(){
@@ -157,34 +156,36 @@ void DS_led_estado()
     }
 }
 
-// cambia la potencia de los leds de la alarma 0(apagado)/1(min)/2(med)/3(max)
-void DS_led_alarma()    //OK CHECK FEB2026
+// cambia la potencia de los leds de la alarma 0(apagado)/1/2/3
+void DS_led_alarma()
 {
     if (ledAlarma == 0)
     {
-        ledAlarma++;
-        DS_rtc_setAlarma(true);
-        Serial.println("ledAlarma :  MINIMO");
+        led_01.turnOFF();
+        led_02.turnOFF();
+        led_03.turnOFF();
     }
     else if (ledAlarma == 1)
     {
-        ledAlarma++;
-        Serial.println("ledAlarma :  MEDIO");
+        led_01.turnON();
+        led_02.turnOFF();
+        led_03.turnOFF();
     }
     else if (ledAlarma == 2)
     {
-        ledAlarma++;
-        Serial.println("ledAlarma :  MAXIMO");
+        led_01.turnON();
+        led_02.turnON();
+        led_03.turnOFF();
     }
     else if (ledAlarma == 3)
     {
-        ledAlarma = 0;
-        DS_rtc_setAlarma(false);
+        led_01.turnON();
+        led_02.turnON();
+        led_03.turnON();
     }
     else
     {
         Serial.println("Error: ledAlarma no valido");
         ledAlarma = 0; // reset to default
-        DS_rtc_setAlarma(false);
     }
 }
