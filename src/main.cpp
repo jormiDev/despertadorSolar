@@ -211,6 +211,7 @@ DS_led_loop();
 DS_buzzer_loop();
 // DS_rtc_loop();
 
+DS_rtc_alarmaApagar(); // gestionar apagado alarma
 
 /*
 zona de test
