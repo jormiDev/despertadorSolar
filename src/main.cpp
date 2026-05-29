@@ -67,9 +67,10 @@ int pulsado;
 // Duración de la nota: 16 significa una semicorchea (un pitido muy corto y rápido)
 // Si lo quieres un poco más largo, puedes cambiarlo por 8 o 4.
 ezBuzzer mibuzzer(PIN_BUZZER, BUZZER_TYPE_ACTIVE, HIGH);
-bool alarmaEstado;
-int alarmaMelodia;
-static unsigned long mibuzzer_ultVez;      //millis del ultimo pitido para no saturar el buzzer
+bool alarmaEstado;      // true(activada) / false(desactivada)
+int alarmaMelodia;      // 0-7, 0 = sin melodía, 1-7 melodías predefinidas
+unsigned long mibuzzer_ultVez;      //millis del ultimo pitido para no saturar el buzzer
+bool mibuzzer_estaSonando; // para saber si el buzzer está actualmente sonando o no
 
 // pitido simple
 int MELODIA_01_not[] = {NOTE_E5};
@@ -229,7 +230,8 @@ zona de test
 // DS_buzzer_test(3); ok
 // DS_buzzer_test(4); ok
 // DS_buzzer_test(5); ok
-DS_buzzer_test(6);
+// DS_buzzer_test(6); ok
+DS_buzzer_test(7); // ok
 
 
 }//fin loop

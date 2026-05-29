@@ -1,5 +1,13 @@
 #include "dSolar_buzzer.hpp"
 
+#ifndef BUZZER_PLAYING
+#define BUZZER_PLAYING 1
+#endif
+
+#ifndef BUZZER_IDLE
+#define BUZZER_IDLE 0
+#endif
+
 // init buzzer
 void DS_buzzer_setup()
 {
@@ -7,12 +15,21 @@ void DS_buzzer_setup()
     alarmaMelodia = 0;      // set alarma inicial
     mibuzzer.stop();        // Aseguramos que el buzzer esté apagado al inicio
     mibuzzer_ultVez = 0;    // Inicializamos el tiempo del último pitido
+    mibuzzer_estaSonando = false; // El buzzer no está sonando al inicio
 }
 
 // llamada en cada loop
 void DS_buzzer_loop()
 {
     mibuzzer.loop();
+    if (mibuzzer.getState() == BUZZER_PLAYING)
+    {
+        mibuzzer_estaSonando = true;
+    }
+    else
+    {
+        mibuzzer_estaSonando = false;
+    }
 }
 
 // cambia el estado de la alarma: true(activada)/false(desactivada)
@@ -83,37 +100,46 @@ int DS_buzzer_melodia()
 void DS_buzzer_canta()
 {
     //esperar 10 seg para no saturar el buzzer
-
-    switch (alarmaMelodia)
+    unsigned long tiempoActual = millis();
+    if (tiempoActual - mibuzzer_ultVez >= 10000)
     {
-        case 0:
-            mibuzzer.stop();
-            break;
+        mibuzzer_ultVez = tiempoActual;
+        if (mibuzzer.getState() == BUZZER_IDLE)
+        {
+            switch (alarmaMelodia)
+            {
+                case 0:
+                    mibuzzer.stop();
+                    break;        
+                case 1:
+                    mibuzzer.playMelody(MELODIA_01_not, MELODIA_01_dur, MELODIA_01_longitud);
+                    break;  
+                case 2:
+                    mibuzzer.playMelody(MELODIA_02_not, MELODIA_02_dur, MELODIA_02_longitud);
+                    break;  
+                case 3:
+                    mibuzzer.playMelody(MELODIA_03_not, MELODIA_03_dur, MELODIA_03_longitud);
+                    break;  
+                case 4:
+                    mibuzzer.playMelody(MELODIA_04_not, MELODIA_04_dur, MELODIA_04_longitud);
+                    break;
+                case 5:
+                    mibuzzer.playMelody(MELODIA_05_not, MELODIA_05_dur, MELODIA_05_longitud);
+                    break;
+                case 6:
+                    mibuzzer.playMelody(MELODIA_06_not, MELODIA_06_dur, MELODIA_06_longitud);
+                    break;
+                case 7:
+                    mibuzzer.playMelody(MELODIA_07_not, MELODIA_07_dur, MELODIA_07_longitud);
+                    break;
+                default:
+                    mibuzzer.stop();
+            }
 
-        case 1:
-            mibuzzer.playMelody(MELODIA_01_not, MELODIA_01_dur, MELODIA_01_longitud);
-            break;  
-        case 2:
-            mibuzzer.playMelody(MELODIA_02_not, MELODIA_02_dur, MELODIA_02_longitud);
-            break;  
-        case 3:
-            mibuzzer.playMelody(MELODIA_03_not, MELODIA_03_dur, MELODIA_03_longitud);
-            break;  
-        case 4:
-            mibuzzer.playMelody(MELODIA_04_not, MELODIA_04_dur, MELODIA_04_longitud);
-            break;
-        case 5:
-            mibuzzer.playMelody(MELODIA_05_not, MELODIA_05_dur, MELODIA_05_longitud);
-            break;
-        case 6:
-            mibuzzer.playMelody(MELODIA_06_not, MELODIA_06_dur, MELODIA_06_longitud);
-            break;
-        case 7:
-            mibuzzer.playMelody(MELODIA_07_not, MELODIA_07_dur, MELODIA_07_longitud);
-            break;
-        default:
-            mibuzzer.stop();
+        }
     }
+
+
 }
 
 
@@ -243,6 +269,8 @@ void DS_buzzer_test(int _prueba){
     case 7:{
         // test - canta
         Serial.println("Buzzer Test 7 - Canta");
+        alarmaMelodia = 3; // asignamos la melodía del estribillo de "Golden" (KPop Demon Hunters)
+        Serial.println("alarmaMelodia: " + String(alarmaMelodia));
         DS_buzzer_canta();
         break;
     }

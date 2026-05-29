@@ -21,6 +21,8 @@ extern int pulsado;
 
 extern bool alarmaEstado;
 extern int alarmaMelodia;
+extern ezBuzzer mibuzzer;
+extern bool mibuzzer_estaSonando;
 
 extern ezButton boton_enter;
 extern ezButton boton_mas;

@@ -11,7 +11,8 @@ objetos y variables
 extern ezBuzzer mibuzzer;
 extern bool alarmaEstado;
 extern int alarmaMelodia;
-extern  unsigned long mibuzzer_ultVez;      
+extern  unsigned long mibuzzer_ultVez; 
+extern bool mibuzzer_estaSonando;
 
 extern int MELODIA_01_not[];
 extern int MELODIA_01_dur[];
