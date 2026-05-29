@@ -8,7 +8,7 @@ void DS_logica_setup()
 }
 
 // función para gestionar la lectura de comandos por Serial
-void gestionarLecturaSerial()
+void DS_logica_gestionarLecturaSerial()
 {
     if (Serial.available() > 0)
     {
@@ -22,8 +22,11 @@ void gestionarLecturaSerial()
             Serial.println("pulsado Serial - MAS");
             break;
         case '-':
-            pulsado = BOTON_MENOS;
-            Serial.println("pulsado Serial - MENOS");
+        case 'm':
+        case 'e':
+            entradaPorSerial = caracterEntrante;
+            Serial.print(F("recibido "));
+            Serial.println(entradaPorSerial);
             break;
 
         case 'm':
@@ -46,8 +49,30 @@ void gestionarLecturaSerial()
 // llamada en cada loop
 void DS_logica_loop()
 {
-    // solo entra si boton pulsado o entrada serial
-    if(pulsado != BOTON_ZERO){
+      if ( entradaPorSerial == 'e' || entradaPorBoton == 'e'){
+        pulsado = BOTON_ENTER;
+        entradaPorSerial = '\0'; // Limpiar la entrada por Serial después de procesarla
+        entradaPorBoton = '\0';  // Limpiar la entrada por Botón después
+    }
+    else if ( entradaPorSerial == '+' || entradaPorBoton == '+'){
+        pulsado = BOTON_MAS;
+        entradaPorSerial = '\0';
+        entradaPorBoton = '\0';
+    }
+    else if ( entradaPorSerial == '-' || entradaPorBoton == '-')
+    {
+        pulsado =  BOTON_MENOS;
+        entradaPorSerial = '\0';
+        entradaPorBoton = '\0';
+    }
+    else if ( entradaPorSerial == 'm' || entradaPorBoton == 'm')
+    {
+        pulsado =  BOTON_MENU;
+        entradaPorSerial = '\0';
+        entradaPorBoton = '\0';
+    }   
+    else
+        pulsado = BOTON_ZERO; // no button pressed
 
         maqEstadoPrevio = maqEstado;
 
@@ -229,7 +254,7 @@ void DS_logica_loop()
 }
 
 
-// muestra el estado actual por Serial
+// muestra maquinaEstado actual por Serial
 void DS_logica_muestraEstado()
 {
     Serial.print("maqEstado  ");

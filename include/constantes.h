@@ -23,19 +23,18 @@ pines conectados
 #define     PIN_BOTON_MENOS     4
 #define     PIN_BOTON_MENU      5
 
-
 #define     PIN_LED_01          7
 #define     PIN_LED_02          8
 #define     PIN_LED_03          9
 
 #define     PIN_BUZZER          10
 
-
 /*
 main
 */
-#define     VERSION             0.01
-
+#define     VERSION             0.02    
+                            // 0.01 - version inicial
+                            // 0.02 - test de ubuntu leds, botones y buzzer
 
 /*
 dSolar_lcd.hpp
@@ -44,15 +43,13 @@ dSolar_lcd.hpp
 #define     LCD_COLUMNAS        16
 #define     LCD_FILAS           2
 
-
 /*
 dSolar_led.hpp
 */
-#define    LED_APAGADO             0
-#define    LED_MINIMO              1
-#define    LED_MEDIO               2    
-#define    LED_MAXIMO              3
-
+#define    LED_APAGADO          0
+#define    LED_MINIMO           1
+#define    LED_MEDIO            2    
+#define    LED_MAXIMO           3
 
 /*
 dSolar_boton.hpp
@@ -62,7 +59,6 @@ dSolar_boton.hpp
 #define     BOTON_MAS           2
 #define     BOTON_MENOS         3
 #define     BOTON_MENU          4
-
 
 /*
 dSolar_logica.hpp
@@ -105,7 +101,6 @@ dSolar_logica.hpp
 
 #define     MENSAJE_90          "Salir"
 
-
 /*
 dSolar_buzzer.hpp
 */
@@ -113,7 +108,7 @@ dSolar_buzzer.hpp
 #define     MELODIA_00          "silencio"
 #define     MELODIA_01          "pitido simple"
 #define     MELODIA_02          "pitido largo"
-#define     MELODIA_03          "musica 1"
+#define     MELODIA_03          "golden (k-pop)"
 #define     MELODIA_04          "musica 2"
 #define     MELODIA_05          "musica 3"
 #define     MELODIA_06          "musica 4"

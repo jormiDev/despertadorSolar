@@ -11,6 +11,30 @@ objetos y variables
 extern ezBuzzer mibuzzer;
 extern bool alarmaEstado;
 extern int alarmaMelodia;
+extern  unsigned long mibuzzer_ultVez; 
+extern bool mibuzzer_estaSonando;
+
+extern int MELODIA_01_not[];
+extern int MELODIA_01_dur[];
+extern int MELODIA_01_longitud;
+extern int MELODIA_02_not[];
+extern int MELODIA_02_dur[];   
+extern int MELODIA_02_longitud;
+extern int MELODIA_03_not[];
+extern int MELODIA_03_dur[];
+extern int MELODIA_03_longitud; 
+extern int MELODIA_04_not[];
+extern int MELODIA_04_dur[];
+extern int MELODIA_04_longitud;
+extern int MELODIA_05_not[];
+extern int MELODIA_05_dur[];
+extern int MELODIA_05_longitud;
+extern int MELODIA_06_not[];
+extern int MELODIA_06_dur[];
+extern int MELODIA_06_longitud;
+extern int MELODIA_07_not[];
+extern int MELODIA_07_dur[];
+extern int MELODIA_07_longitud;
 
 /*
 funciones

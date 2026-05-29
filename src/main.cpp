@@ -28,12 +28,11 @@ LCD 1602
 #include <Arduino.h>
 
 #include "RTClib.h"
-#include <Wire.h> 
+#include <ezLED.h>
+#include <ezButton.h>
+#include <ezBuzzer.h>
+// #include <Wire.h> 
 // #include <LiquidCrystal_I2C.h>
-
-// #include <ezLED.h>
-// #include <ezButton.h>
-// #include <ezBuzzer.h>
 
 #include "constantes.h"
 
@@ -44,30 +43,11 @@ LCD 1602
 #include "dSolar_buzzer.hpp"
 #include "dSolar_rtc.hpp"
 
-// dSolar_logica
-int maqEstado;
-int maqEstadoPrevio;
-char entradaPorSerial = '\0';   // para almacenar la última entrada recibida por Serial (comandos '+', '-', 'm', 'e')
-bool mensajeUnico = false;      // para evitar mostrar el estado varias veces al detectar un mismo pulsado (por ejemplo, el mismo botón presionado durante varios loops o la misma entrada por serial)
-int pulsado;                    // 0 = no button pressed, 1 = boton enter, 2 = boton mas, 3 = boton menos, 4 = boton menu
-
-// dSolar_rtc
-RTC_DS1307 rtcReloj;            // objeto para gestionar el reloj RTC
-uint32_t rtcAlarma;             //  almacena la hora de la alarma como timestamp (uint32_t) para facilitar comparaciones lógicas con la hora actual del reloj (DateTime.now() convertido a timestamp)
-bool setAlarma;                 // indica si la alarma está activada o no
-bool alarmaSonando;             // indica si la alarma está sonando actualmente
-
-//------------------------------------ PENDIENTE DE REPASAR ------------------------------------
-
-
 // dSolar_boton
 ezButton boton_enter(PIN_BOTON_ENTER);
 ezButton boton_mas(PIN_BOTON_MAS);
 ezButton boton_menos(PIN_BOTON_MENOS);
 ezButton boton_menu(PIN_BOTON_MENU);
-
-// // dSolar_lcd
-// LiquidCrystal_I2C lcd(LCD_I2C_ADR, LCD_COLUMNAS, LCD_FILAS); 
 
 // dSolar_led
 int ledEstado;
@@ -76,17 +56,87 @@ ezLED led_01(PIN_LED_01);
 ezLED led_02(PIN_LED_02);
 ezLED led_03(PIN_LED_03);
 
-// // dSolar_buzzer
-// ezBuzzer mibuzzer(PIN_BUZZER);
-bool alarmaEstado;
- int alarmaMelodia;
-// int melody[] = {
-//     NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_G5, NOTE_C5, NOTE_D5, NOTE_E5, NOTE_F5, NOTE_F5,
-//     NOTE_F5, NOTE_F5, NOTE_F5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_D5, NOTE_D5, NOTE_E5, NOTE_D5, NOTE_G5};
+// dSolar_logica
+int maqEstado;
+int maqEstadoPrevio;
+char entradaPorSerial = '\0';
+char entradaPorBoton = '\0';
+int pulsado;
 
-// // note durations: 4 = quarter note, 8 = eighth note, etc, also called tempo:
-// int noteDurations[] = {
-//     8, 8, 4, 8, 8, 4, 8, 8, 8, 8, 2, 8, 8, 8, 8, 8, 8, 8, 16, 16, 8, 8, 8, 8, 4, 4};
+// dSolar_buzzer
+// Duración de la nota: 16 significa una semicorchea (un pitido muy corto y rápido)
+// Si lo quieres un poco más largo, puedes cambiarlo por 8 o 4.
+ezBuzzer mibuzzer(PIN_BUZZER, BUZZER_TYPE_ACTIVE, HIGH);
+bool alarmaEstado;      // true(activada) / false(desactivada)
+int alarmaMelodia;      // 0-7, 0 = sin melodía, 1-7 melodías predefinidas
+unsigned long mibuzzer_ultVez;      //millis del ultimo pitido para no saturar el buzzer
+bool mibuzzer_estaSonando; // para saber si el buzzer está actualmente sonando o no
+
+// pitido simple
+int MELODIA_01_not[] = {NOTE_E5};
+int MELODIA_01_dur[] = {16};
+int MELODIA_01_longitud = sizeof(MELODIA_01_dur) / sizeof(int);
+
+// pitido largo
+int MELODIA_02_not[] = {NOTE_E5};       
+int MELODIA_02_dur[] = {16};
+int MELODIA_02_longitud = sizeof(MELODIA_02_dur) / sizeof(int);
+
+// "Golden" (KPop Demon Hunters)
+int MELODIA_03_not[] = {
+    // --- FASE 1: El sintetizador místico (0-10s) ---
+    NOTE_E5, NOTE_G5, NOTE_B5, NOTE_E6,     NOTE_D6, NOTE_B5, NOTE_G5, NOTE_E5,
+    NOTE_A5, NOTE_B5, NOTE_C6, NOTE_E6,     NOTE_D6, NOTE_B5, NOTE_A5, NOTE_G5,
+    NOTE_E5, NOTE_G5, NOTE_B5, NOTE_E6,     NOTE_D6, NOTE_B5, NOTE_G5, NOTE_E5,
+    // --- FASE 2: El redoble que sube la tensión (10-20s) ---
+    NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5,     NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5,
+    NOTE_F5, NOTE_F5, NOTE_F5, NOTE_F5,     NOTE_G5, NOTE_G5, NOTE_A5, NOTE_B5,
+    // --- FASE 3: ¡El Impacto / Drop! (20-30s) ---
+    NOTE_E6, NOTE_D6, NOTE_E6 // ¡BOOM! Notas potentes y largas
+};
+int MELODIA_03_dur[] = {
+    // Fase 1: Notas fluidas pero pausadas (8 = Corcheas)
+    8, 8, 8, 8,     8, 8, 8, 8,
+    8, 8, 8, 8,     8, 8, 8, 8,
+    8, 8, 8, 8,     8, 8, 8, 8,
+
+    // Fase 2: El redoble empieza normal y se acelera (16 = Semicorcheras)
+    8, 8, 8, 8,     16, 16, 16, 16,
+    16, 16, 16, 16,     16, 16, 16, 16,
+
+    // Fase 3: Notas pesadas y largas (2 = Blancas, duran bastante más)
+    2, 4, 1
+};
+int MELODIA_03_longitud = sizeof(MELODIA_03_dur) / sizeof(int);
+
+// pitido simple
+int MELODIA_04_not[] = {NOTE_E5};
+int MELODIA_04_dur[] = {16};
+int MELODIA_04_longitud = sizeof(MELODIA_04_dur) / sizeof(int);
+
+// pitido simple
+int MELODIA_05_not[] = {NOTE_E5};
+int MELODIA_05_dur[] = {16};
+int MELODIA_05_longitud = sizeof(MELODIA_05_dur) / sizeof(int);
+
+// pitido simple
+int MELODIA_06_not[] = {NOTE_E5};
+int MELODIA_06_dur[] = {16};
+int MELODIA_06_longitud = sizeof(MELODIA_06_dur) / sizeof(int);
+
+// pitido simple
+int MELODIA_07_not[] = {NOTE_E5};
+int MELODIA_07_dur[] = {16};
+int MELODIA_07_longitud = sizeof(MELODIA_07_dur) / sizeof(int);
+
+/*    test pendiente      */
+
+// dSolar_rtc
+
+// // dSolar_lcd
+// LiquidCrystal_I2C lcd(LCD_I2C_ADR, LCD_COLUMNAS, LCD_FILAS); 
+
+
 
 
 /*
@@ -103,47 +153,47 @@ void setup()
 
   Serial.println("setup   INIT");
 
-  // init logica
-  maqEstado = 0;
-  Serial.println("setup   -  Logica");
-  Serial.println(F("Comandos validos: '+', '-', 'm', 'e'"));
-
-  // init rtc
-  DS_rtc_setup();
-  Serial.println("setup   -  RTC");
-  Serial.println(setAlarma ? "Alarma      ACTIVADA" : "Alarma DESACTIVADA");
-  Serial.println("Reloj: " + String(rtcReloj.now().timestamp()));
-  Serial.println("Alarma: " + String(rtcAlarma));
-
-  //------------------------------------ PENDIENTE DE REPASAR ------------------------------------
-
   // init botones
-  DS_boton_setup();
-  Serial.println("setup   -  Botones");
+   DS_boton_setup();
+   Serial.println("setup   -  Botones");
 
-  //  // init leds
-  //   DS_led_setup();
-  //   Serial.println("setup   -  Leds");
+  // init leds
+  DS_led_setup();
+  Serial.println("setup   -  Leds");
 
-  //   // init buzzer
-  //   DS_buzzer_setup();
-  //   Serial.println("setup   -  Buzzer");
+  // init buzzer
+  DS_buzzer_setup();
+  Serial.println("setup   -  Buzzer");
 
-  //   // init LCD
-  //   DS_lcd_setup();
-  //   Serial.println("setup   -  LCD")     ;
-  //   DS_lcd_pantalla(1);
-  //   delay(1000);
-  //   DS_lcd_pantalla(2);
-  //   delay(1000);
+   // init logica
+   maqEstado = 0;
+   Serial.println("setup   -  Logica");
+   Serial.println(F("Comandos validos: '+', '-', 'm', 'e'"));
 
-  //   lcd.clear();
 
-  //fin setup
-  Serial.println("setup   FIN");
-  Serial.println("");
+  /*    test pendiente      */
 
-  Serial.println("loop    INIT");
+   //   DS_lcd_pantalla(1);
+   //   delay(1000);
+   //   DS_lcd_pantalla(2);
+   //   delay(1000);
+
+   //   lcd.clear();
+
+   // init rtc
+   // DS_rtc_setup();
+
+   //   // init LCD
+   //   DS_lcd_setup();
+   //   Serial.println("setup   -  LCD")     ;
+
+
+
+   // fin setup
+   Serial.println("setup   FIN");
+   Serial.println("");
+
+   Serial.println("loop    INIT");
 }
 
 /*
@@ -153,24 +203,36 @@ void setup()
 void loop()
 {
 
-// test
-// DS_boton_test(0);
-
-// lectura por Serial - para permitir control por Serial además de por botones físicos (comandos '+', '-', 'm', 'e')
-gestionarLecturaSerial();
-
-// loop  
+// llamadas en cada loop  
+DS_logica_gestionarLecturaSerial();
+DS_logica_loop();
 DS_boton_loop();
-DS_rtc_loop();
+DS_led_loop();
+DS_buzzer_loop();
+// DS_rtc_loop();
 
 DS_rtc_alarmaApagar(); // gestionar apagado alarma
 
-DS_logica_loop(); // logica de la máquina de estados  
+/*
+zona de test
+*/
+//DS_boton_test(0); ok
+//DS_boton_test(1); ok
+//DS_boton_test(2); ok
+//DS_led_test(0);   ok
+//DS_led_test(1);   NOT ok
+//DS_led_test(2);   NOT ok
+//DS_led_test(3);   NOT ok
+//DS_led_test(4);   ok
+//DS_led_test(5);   ok
+// DS_buzzer_test(0); ok
+// DS_buzzer_test(1); ok
+// DS_buzzer_test(2); ok
+// DS_buzzer_test(3); ok
+// DS_buzzer_test(4); ok
+// DS_buzzer_test(5); ok
+// DS_buzzer_test(6); ok
+DS_buzzer_test(7); // ok
 
 
-//------------------------------------ PENDIENTE DE REPASAR ------------------------------------
-
-// DS_led_loop();
-// DS_buzzer_loop();
-
-}
+}//fin loop
