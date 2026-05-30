@@ -31,7 +31,7 @@ LCD 1602
 #include <ezLED.h>
 #include <ezButton.h>
 #include <ezBuzzer.h>
-// #include <Wire.h> 
+#include <Wire.h> 
 // #include <LiquidCrystal_I2C.h>
 
 #include "constantes.h"
@@ -129,11 +129,15 @@ int MELODIA_07_not[] = {NOTE_E5};
 int MELODIA_07_dur[] = {16};
 int MELODIA_07_longitud = sizeof(MELODIA_07_dur) / sizeof(int);
 
-/*    test pendiente      */
-
 // dSolar_rtc
+RTC_DS1307 rtc;     // Objeto global para interactuar con el RTC
+int rtc_hora;       //almacenará la hora actual del sistema (0-23:0-59)
+int rtc_minuto;
+int alarma_hora;    //almacenará la hora de la alarma (0-23:0-59)
+int alarma_minuto;
+bool alarmaDisparadaEsteMinuto = false; // para evitar que la alarma se dispare varias veces en el mismo minuto, esta variable se pone a true cuando se dispara la alarma y se resetea a false cuando el minuto cambia
 
-// // dSolar_lcd
+// dSolar_lcd
 // LiquidCrystal_I2C lcd(LCD_I2C_ADR, LCD_COLUMNAS, LCD_FILAS); 
 
 
@@ -170,6 +174,9 @@ void setup()
    Serial.println("setup   -  Logica");
    Serial.println(F("Comandos validos: '+', '-', 'm', 'e'"));
 
+   // init rtc
+   DS_rtc_setup();
+
 
   /*    test pendiente      */
 
@@ -180,8 +187,7 @@ void setup()
 
    //   lcd.clear();
 
-   // init rtc
-   // DS_rtc_setup();
+
 
    //   // init LCD
    //   DS_lcd_setup();
@@ -209,7 +215,7 @@ DS_logica_loop();
 DS_boton_loop();
 DS_led_loop();
 DS_buzzer_loop();
-// DS_rtc_loop();
+DS_rtc_loop();
 
 
 /*
@@ -231,7 +237,11 @@ zona de test
 // DS_buzzer_test(4); ok
 // DS_buzzer_test(5); ok
 // DS_buzzer_test(6); ok
-DS_buzzer_test(3); // ok
-
+// DS_buzzer_test(3);  ok
+// DS_rtc_test(0);  ok  
+// DS_rtc_test(1);  ok
+// DS_rtc_test(2);  ok
+// DS_rtc_test(3);  ok
+// DS_rtc_test(4);  ok
 
 }//fin loop
