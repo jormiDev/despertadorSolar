@@ -16,10 +16,13 @@ extern LiquidCrystal_I2C lcd;
 funciones
 */
 
-// init pantalla lcd   16*2
-void DS_lcd_setup();
+// Inicializa la pantalla lcd 16*2
+void DS_lcd_setup(); //
 
-// pantallas predefinidas
-void DS_lcd_pantalla(int _x);
+// Limpia por completo la pantalla y borra el contenido
+void DS_lcd_limpiar();
+
+// Pantallas y menús dinámicos del sistema
+void DS_lcd_pantalla(int _x); 
 
 #endif

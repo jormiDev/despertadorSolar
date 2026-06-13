@@ -62,14 +62,12 @@ void DS_rtc_loop()
                 if (!alarmaDisparadaEsteMinuto)
                 {
                     Serial.println(F("[ALERTA] ¡Hora de la alarma coincidente!"));
-                    // Llama a tu lógica actual para activar el sonido
-                    /*
-                    
-                    ALARMA activada - Aquí puedes llamar a la función que activa el buzzer o lo que quieras que haga tu alarma
-                    DS_buzzer_estado(true); // Ejemplo: activar la alarma sonora
 
-                    */
                     alarmaDisparadaEsteMinuto = true;
+                    
+                    // Mientras estemos en el minuto de la alarma, llamamos a canta()
+                    // Tu función DS_buzzer_canta ya tiene un filtro de 10s con millis() para no saturar.
+                    DS_buzzer_canta();
                 }
             }
             else

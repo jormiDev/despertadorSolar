@@ -138,7 +138,7 @@ int alarma_minuto;
 bool alarmaDisparadaEsteMinuto = false; // para evitar que la alarma se dispare varias veces en el mismo minuto, esta variable se pone a true cuando se dispara la alarma y se resetea a false cuando el minuto cambia
 
 // dSolar_lcd
-// LiquidCrystal_I2C lcd(LCD_I2C_ADR, LCD_COLUMNAS, LCD_FILAS); 
+LiquidCrystal_I2C lcd(LCD_I2C_ADR, LCD_COLUMNAS, LCD_FILAS); 
 
 
 
@@ -174,26 +174,12 @@ void setup()
    Serial.println("setup   -  Logica");
    Serial.println(F("Comandos validos: '+', '-', 'm', 'e'"));
 
-   // init rtc
-   DS_rtc_setup();
+    // init rtc
+    DS_rtc_setup();
 
-
-  /*    test pendiente      */
-
-   //   DS_lcd_pantalla(1);
-   //   delay(1000);
-   //   DS_lcd_pantalla(2);
-   //   delay(1000);
-
-   //   lcd.clear();
-
-
-
-   //   // init LCD
-   //   DS_lcd_setup();
-   //   Serial.println("setup   -  LCD")     ;
-
-
+    //   // init LCD
+    DS_lcd_setup();
+    Serial.println("setup   -  LCD")     ;
 
    // fin setup
    Serial.println("setup   FIN");

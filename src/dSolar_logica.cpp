@@ -1,4 +1,5 @@
 #include "dSolar_logica.hpp"
+#include "dSolar_lcd.hpp"
 
 // init logica
 void DS_logica_setup()
@@ -89,9 +90,24 @@ void DS_logica_loop()
         else if (pulsado == BOTON_MENOS)       maqEstado = 10;
     break;
 
-    case 21:    // menu leds - 0 / min / med / max       
-        DS_led_estado();        
-                                                maqEstado = 20;
+    case 21:    // menu leds - 0 / min / med / max
+        if (pulsado == BOTON_MAS)
+        {
+            ledEstado = (ledEstado + 1) % 4; // Cicla entre 0 y 3
+            DS_led_estado();
+        }
+        else if (pulsado == BOTON_MENOS)
+        {
+            ledEstado = (ledEstado == 0) ? 3 : ledEstado - 1;
+            DS_led_estado();
+        }
+        else if (pulsado == BOTON_ENTER || pulsado == BOTON_MENU)
+        {
+            maqEstado = 20; // Salimos al menú padre
+        }
+
+        // DS_led_estado();        
+        //                                         maqEstado = 20;
     break;       
 
     case 30:    // menu alarma
@@ -220,9 +236,11 @@ void DS_logica_loop()
         break;
     }
 
-    // si cambia el estado mostrar el nuevo por serial
-    if( maqEstado != maqEstadoPrevio)
-        DS_logica_muestraEstado();
+    // si cambia el estado 
+    if( maqEstado != maqEstadoPrevio){
+        DS_logica_muestraEstado();          // mostrar el nuevo por serial
+        DS_lcd_pantalla(maqEstado);         // mostrar el nuevo por lcd
+    }
 }
 
 

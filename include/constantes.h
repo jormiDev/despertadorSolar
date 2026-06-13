@@ -32,9 +32,10 @@ pines conectados
 /*
 main
 */
-#define     VERSION             0.02    
-                            // 0.01 - version inicial
-                            // 0.02 - test de ubuntu leds, botones y buzzer
+#define     VERSION             0.03    // 4 caracteres en total, incluyendo el punto decimal
+                                        // 0.01 - version inicial
+                                        // 0.02 - test de ubuntu leds, botones y buzzer
+                                        // 0.03 - actualización de funcionalidades  ds_LCD
 
 /*
 dSolar_lcd.hpp
