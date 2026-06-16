@@ -32,7 +32,7 @@ LCD 1602
 #include <ezButton.h>
 #include <ezBuzzer.h>
 #include <Wire.h> 
-// #include <LiquidCrystal_I2C.h>
+#include <LiquidCrystal_I2C.h>
 
 #include "constantes.h"
 
@@ -139,9 +139,15 @@ bool alarmaDisparadaEsteMinuto = false; // para evitar que la alarma se dispare 
 
 // dSolar_lcd
 LiquidCrystal_I2C lcd(LCD_I2C_ADR, LCD_COLUMNAS, LCD_FILAS); 
-
-
-
+bool lcd_test_once;                         // para que la función de test de LCD solo se ejecute una vez y no en cada loop
+unsigned long lcd_tiempoArranque;           // Control de tiempo para que la pantalla de inicio dure exactamente 10 segundos
+bool lcd_primerArranque;                    // Para saber si es el primer arranque del sistema y mostrar la pantalla de inicio durante 10 segundos
+int lcd_ultimoEstadoDibujado;               // Refresco si cambia menu/estado
+int lcd_ultimoMinutoDibujado;               // Refresco si cambia minuto
+unsigned long lcd_ultimoRefrescoParpadeo;   // Refresco en caso de parpadeos
+bool lcd_parpadeoActivo;                    // Para saber si el parpadeo está activo o no
+bool lcd_refrescarPantalla;                 // flag para forzar refresco de pantalla
+int lcd_pantallaActual;                     // Para saber qué pantalla se está mostrando actualmente y evitar refrescos innecesarios
 
 /*
 ********   S E T U P   ***************
@@ -202,6 +208,7 @@ DS_boton_loop();
 DS_led_loop();
 DS_buzzer_loop();
 DS_rtc_loop();
+DS_lcd_refresco(); // Refresco de pantalla (solo en casos necesarios)
 
 
 /*
@@ -229,5 +236,7 @@ zona de test
 // DS_rtc_test(2);  ok
 // DS_rtc_test(3);  ok
 // DS_rtc_test(4);  ok
+
+DS_lcd_test(12);  
 
 }//fin loop

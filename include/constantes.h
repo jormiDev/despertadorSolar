@@ -43,6 +43,7 @@ dSolar_lcd.hpp
 #define     LCD_I2C_ADR         0x27
 #define     LCD_COLUMNAS        16
 #define     LCD_FILAS           2
+#define     LCD_TIEMPO_INICIO   10000   // Tiempo en milisegundos que se muestra la pantalla de inicio (10 segundos)
 
 /*
 dSolar_led.hpp
