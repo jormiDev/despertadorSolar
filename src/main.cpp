@@ -140,14 +140,16 @@ bool alarmaDisparadaEsteMinuto = false; // para evitar que la alarma se dispare 
 // dSolar_lcd
 LiquidCrystal_I2C lcd(LCD_I2C_ADR, LCD_COLUMNAS, LCD_FILAS); 
 bool lcd_test_once;                         // para que la función de test de LCD solo se ejecute una vez y no en cada loop
-unsigned long lcd_tiempoArranque;           // Control de tiempo para que la pantalla de inicio dure exactamente 10 segundos
-bool lcd_primerArranque;                    // Para saber si es el primer arranque del sistema y mostrar la pantalla de inicio durante 10 segundos
-int lcd_ultimoEstadoDibujado;               // Refresco si cambia menu/estado
-int lcd_ultimoMinutoDibujado;               // Refresco si cambia minuto
-unsigned long lcd_ultimoRefrescoParpadeo;   // Refresco en caso de parpadeos
+// Para parpedear HH / MM 
 bool lcd_parpadeoActivo;                    // Para saber si el parpadeo está activo o no
-bool lcd_refrescarPantalla;                 // flag para forzar refresco de pantalla
 int lcd_pantallaActual;                     // Para saber qué pantalla se está mostrando actualmente y evitar refrescos innecesarios
+
+// unsigned long lcd_tiempoArranque;           // Control de tiempo para que la pantalla de inicio dure exactamente 10 segundos
+// bool lcd_primerArranque;                    // Para saber si es el primer arranque del sistema y mostrar la pantalla de inicio durante 10 segundos
+// int lcd_ultimoEstadoDibujado;               // Refresco si cambia menu/estado
+// int lcd_ultimoMinutoDibujado;               // Refresco si cambia minuto
+// unsigned long lcd_ultimoRefrescoParpadeo;   // Refresco en caso de parpadeos
+// bool lcd_refrescarPantalla;                 // flag para forzar refresco de pantalla
 
 /*
 ********   S E T U P   ***************
@@ -208,35 +210,23 @@ DS_boton_loop();
 DS_led_loop();
 DS_buzzer_loop();
 DS_rtc_loop();
-DS_lcd_refresco(); // Refresco de pantalla (solo en casos necesarios)
+DS_lcd_loop(); // Refresco de pantalla (solo en casos necesarios)
 
 
 /*
 zona de test
 */
-//DS_boton_test(0); ok
-//DS_boton_test(1); ok
-//DS_boton_test(2); ok
+
+//DS_boton_test(2); ok  0, 1, 2
 //DS_led_test(0);   ok
 //DS_led_test(1);   NOT ok
 //DS_led_test(2);   NOT ok
 //DS_led_test(3);   NOT ok
 //DS_led_test(4);   ok
 //DS_led_test(5);   ok
-// DS_buzzer_test(0); ok
-// DS_buzzer_test(1); ok
-// DS_buzzer_test(2); ok
-// DS_buzzer_test(3); ok
-// DS_buzzer_test(4); ok
-// DS_buzzer_test(5); ok
-// DS_buzzer_test(6); ok
-// DS_buzzer_test(3);  ok
-// DS_rtc_test(0);  ok  
-// DS_rtc_test(1);  ok
-// DS_rtc_test(2);  ok
-// DS_rtc_test(3);  ok
-// DS_rtc_test(4);  ok
+// DS_buzzer_test(6); ok    0, 1, 2, 3, 4, 5, 6
+// DS_rtc_test(4);  ok      0, 1, 2, 3, 4
 
-DS_lcd_test(12);  
+DS_lcd_test(20);  
 
 }//fin loop

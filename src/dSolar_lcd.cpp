@@ -12,14 +12,14 @@ setCursor( columna 0-15, fila 0-1 )
 void DS_lcd_setup()
 {
     lcd_test_once = false;          
-    lcd_tiempoArranque = millis();
-    lcd_primerArranque = true;      
-    lcd_ultimoEstadoDibujado = -1;  
-    lcd_ultimoMinutoDibujado = -1;  
-    lcd_ultimoRefrescoParpadeo = 0; 
     lcd_parpadeoActivo = false;
-    lcd_refrescarPantalla = true;  
-    lcd_pantallaActual = -1;        
+    // lcd_tiempoArranque = millis();
+    // lcd_primerArranque = true;      
+    // lcd_ultimoEstadoDibujado = -1;  
+    // lcd_ultimoMinutoDibujado = -1;  
+    // lcd_ultimoRefrescoParpadeo = 0; 
+    // lcd_refrescarPantalla = true;  
+    // lcd_pantallaActual = -1;        
 
     lcd.init();
     lcd.clear();
@@ -28,58 +28,54 @@ void DS_lcd_setup()
 }
 
 // Refresco de pantalla (solo en casos necesarios)
-void DS_lcd_refresco(){
+void DS_lcd_loop(){
 
     // Hacer comprobaciones para refrescar
 
-    // Caso 1: Hemos cambiado de menú/estado
-    if (maqEstado != lcd_ultimoEstadoDibujado)
-    {
-        lcd_refrescarPantalla = true;
-        lcd_ultimoEstadoDibujado = maqEstado; // Guardamos el estado actual
-    }
+    // // Caso 1: Hemos cambiado de menú/estado
+    // if (maqEstado != lcd_ultimoEstadoDibujado)
+    // {
+    //     lcd_refrescarPantalla = true;
+    //     lcd_ultimoEstadoDibujado = maqEstado; // Guardamos el estado actual
+    // }
 
-    // Caso 2: Estamos en la pantalla de la hora (Estado 10) y ha cambiado el minuto real del RTC
-    if (maqEstado == 10 && rtc_minuto != lcd_ultimoMinutoDibujado)
-    {
-        lcd_ultimoMinutoDibujado = rtc_minuto;
-        lcd_refrescarPantalla = true;
-    }
+    // // Caso 2: Estamos en la pantalla de la hora (Estado 10) y ha cambiado el minuto real del RTC
+    // if (maqEstado == 10 && rtc_minuto != lcd_ultimoMinutoDibujado)
+    // {
+    //     lcd_ultimoMinutoDibujado = rtc_minuto;
+    //     lcd_refrescarPantalla = true;
+    // }
 
-    // Caso 3: Estamos modificando la hora/alarma
-    // Necesitamos refrescar al pulsar botones (+/-) o cada 500ms para el efecto parpadeo
-    if (maqEstado == 51 || maqEstado == 52 || maqEstado == 71 || maqEstado == 72)
-    {
-        // Si el usuario pulsa un botón, refrescamos al instante para que vea el cambio
-        if (pulsado == BOTON_MAS || pulsado == BOTON_MENOS)
-        {
-            lcd_refrescarPantalla = true;
-        }
-        // Además, refrescamos cada 500ms para que la función del LCD haga aparecer/desaparecer los números
-        if (millis() - lcd_ultimoRefrescoParpadeo >= 500)
-        {
-            lcd_ultimoRefrescoParpadeo = millis();
-            lcd_refrescarPantalla = true;
-            lcd_parpadeoActivo = !lcd_parpadeoActivo; // Cambiamos el estado del parpadeo
-        }
-    }
+    // // Caso 3: Estamos modificando la hora/alarma
+    // // Necesitamos refrescar al pulsar botones (+/-) o cada 500ms para el efecto parpadeo
+    // if (maqEstado == 51 || maqEstado == 52 || maqEstado == 71 || maqEstado == 72)
+    // {
+    //     // Si el usuario pulsa un botón, refrescamos al instante para que vea el cambio
+    //     if (pulsado == BOTON_MAS || pulsado == BOTON_MENOS)
+    //     {
+    //         lcd_refrescarPantalla = true;
+    //     }
+    //     // Además, refrescamos cada 500ms para que la función del LCD haga aparecer/desaparecer los números
+    //     if (millis() - lcd_ultimoRefrescoParpadeo >= 500)
+    //     {
+    //         lcd_ultimoRefrescoParpadeo = millis();
+    //         lcd_refrescarPantalla = true;
+    //         lcd_parpadeoActivo = !lcd_parpadeoActivo; // Cambiamos el estado del parpadeo
+    //     }
+    // }
 
-    // Refrescar o no dependiendo de si se cumplen las condiciones anteriores
+    // // Refrescar o no dependiendo de si se cumplen las condiciones anteriores
 
-    // Acción: Si alguna condición se cumple, mandamos la orden al LCD
-    if (lcd_refrescarPantalla)
-    {
-        DS_lcd_pantalla(lcd_pantallaActual); 
-    }
+    // // Acción: Si alguna condición se cumple, mandamos la orden al LCD
+    // if (lcd_refrescarPantalla)
+    // {
+    //     DS_lcd_pantalla(lcd_pantallaActual); 
+    // }
 
 
 }
 
-// Función para limpiar la pantalla por completo
-void DS_lcd_limpiar()
-{
-    lcd.clear(); 
-}
+
 // Renderizado dinámico de pantallas
 // 0: Pantalla de Inicio (Hola Pau / v 0.02)
 // 1: Pantalla de Hora principal
@@ -255,13 +251,80 @@ void DS_lcd_pantalla(int _x)
     case 17:
         lcd.clear();
         lcd.setCursor(0, 0);
-        lcd.print(F("Conf Leds       "));
+        lcd.print(F("Conf. AlarmaLeds"));
         lcd.setCursor(0, 1);
-        lcd.print(F("                "));
+        if (ledAlarma == LED_APAGADO)
+        {
+            lcd.print(F("          [   0]"));
+        }
+        else if (ledAlarma == LED_MINIMO)
+        {
+            lcd.print(F("          [ MIN]"));
+        }
+        else if (ledAlarma == LED_MEDIO)
+        {
+            lcd.print(F("          [ MED]"));
+        }
+        else if (ledAlarma == LED_MAXIMO)
+        {
+            lcd.print(F("          [ MAX]"));
+        }
         break;
 
+    case 18: // Conf Hora Alarma: Fijo (Muestra HH:MM estático)
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print(F("Conf Alarma      "));
+        lcd.setCursor(0, 1);
+        lcd.print(F("           "));
+        lcd.print(DS_rtc_getAlarma());
+        break;
+    case 19: // Conf Hora Alarma: Horas Parpadeando
+    {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print(F("Conf Alarma      "));
+        lcd.setCursor(0, 1);
+        lcd.print(F("          "));
+
+        String horaActual = DS_rtc_getAlarma(); // Devuelve "HH:MM"
+        if (lcd_parpadeoActivo)
+        {
+            lcd.print(horaActual.substring(0, 2)); // Imprime "HH"
+        }
+        else
+        {
+            lcd.print(F("  ")); // Imprime espacios vacíos (efecto parpadeo)
+        }
+        lcd.print(horaActual.substring(2)); // Imprime ":MM"
+        lcd.print(F(" "));
+        break;
+    }
+
+    case 20: // Conf Hora Alarma: Minutos Parpadeando
+    {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print(F("Conf Alarma      "));
+        lcd.setCursor(0, 1);
+        lcd.print(F("          "));
+
+        String horaActual = DS_rtc_getAlarma();  // Devuelve "HH:MM"
+        lcd.print(horaActual.substring(0, 3)); // Imprime "HH:"
+        if (lcd_parpadeoActivo)
+        {
+            lcd.print(horaActual.substring(3, 5)); // Imprime "MM"
+        }
+        else
+        {
+            lcd.print(F("  ")); // Imprime espacios vacíos (efecto parpadeo)
+        }
+        lcd.print(F(" "));
+        break;
+    }
     default:
-        DS_lcd_limpiar();
+        lcd.clear();
+        lcd.setCursor(0, 0);
         break;
     }
 }
@@ -320,6 +383,8 @@ void DS_lcd_test(int _x)
             alarmaEstado = false;
             DS_lcd_pantalla(8); // Pantalla Alarma Estado
             break;
+        case 9:
+            break; 
         case 10:
             Serial.println(F("Test LCD: Pantalla Configuración General"));
             DS_lcd_pantalla(10); // Pantalla Configuración General
@@ -337,15 +402,37 @@ void DS_lcd_test(int _x)
             DS_lcd_pantalla(13); // Conf Reloj: Minutos Parpadeando
             break;
         case 14:
-            Serial.println(F("Test LCD: Pantalla Configuración LEDs: Reservada"));
+            Serial.println(F("Test LCD: Pantalla Configuración LEDs alarma: apagado"));
+            ledAlarma = LED_APAGADO;
             DS_lcd_pantalla(14); // Pantallas de configuración de LEDs reservadas
             break;
         case 15:
-            Serial.println(F("Test LCD: Pantalla Configuración LEDs: Reservada"));
+            Serial.println(F("Test LCD: Pantalla Configuración LEDs alarma: mínimo"));
+            ledAlarma = LED_MINIMO;
             DS_lcd_pantalla(15); // Pantallas de configuración de LEDs reservadas
             break;
-
-
+        case 16:
+            Serial.println(F("Test LCD: Pantalla Configuración LEDs alarma: Medio"));
+            ledAlarma = LED_MEDIO;
+            DS_lcd_pantalla(16); // Pantallas de configuración de LEDs reservadas
+            break;
+        case 17:
+            Serial.println(F("Test LCD: Pantalla Configuración LEDs alarma: Máximo"));
+            ledAlarma = LED_MAXIMO;
+            DS_lcd_pantalla(17); // Pantallas de configuración de LEDs reservadas
+            break;
+        case 18:
+            Serial.println(F("Test LCD: Pantalla Configuración Hora Alarma: Fijo"));
+            DS_lcd_pantalla(18); // Conf Hora Alarma: Fijo
+            break;
+        case 19:
+            Serial.println(F("Test LCD: Pantalla Configuración Hora Alarma: Horas Parpadeando"));
+            DS_lcd_pantalla(19); // Conf Hora Alarma: Horas Par   padeando
+            break;
+        case 20:
+            Serial.println(F("Test LCD: Pantalla Configuración Hora Alarma: Minutos Parpadeando"));
+            DS_lcd_pantalla(20); // Conf Hora Alarma: Minutos Parpadeando
+            break;
 
         default:
             lcd.setCursor(0, 0);
