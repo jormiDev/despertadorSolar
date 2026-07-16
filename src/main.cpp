@@ -139,17 +139,17 @@ bool alarmaDisparadaEsteMinuto = false; // para evitar que la alarma se dispare 
 
 // dSolar_lcd
 LiquidCrystal_I2C lcd(LCD_I2C_ADR, LCD_COLUMNAS, LCD_FILAS); 
-bool lcd_test_once;                         // para que la función de test de LCD solo se ejecute una vez y no en cada loop
-// Para parpedear HH / MM 
-bool lcd_parpadeoActivo;                    // Para saber si el parpadeo está activo o no
-int lcd_pantallaActual;                     // Para saber qué pantalla se está mostrando actualmente y evitar refrescos innecesarios
+bool lcd_test_once;              // func de test LCD, solo se ejecute una vez el test y no en cada loop
+int lcd_pantallaActual;          // pantalla maqEstado actual
+bool lcd_parpadeoActivo;         // parpadeo está activo si true
+bool lcd_refrescarPantalla;      // flag para forzar refresco de pantalla
+unsigned long lcd_tiempoArranque;// tiempo arranque 10 segundos
+bool lcd_primerArranque;         // flag primer arranque del sistema
 
-// unsigned long lcd_tiempoArranque;           // Control de tiempo para que la pantalla de inicio dure exactamente 10 segundos
-// bool lcd_primerArranque;                    // Para saber si es el primer arranque del sistema y mostrar la pantalla de inicio durante 10 segundos
-// int lcd_ultimoEstadoDibujado;               // Refresco si cambia menu/estado
+// Para parpedear HH / MM 
+//int lcd_ultimoEstadoDibujado;               // Refresco si cambia menu/estado
 // int lcd_ultimoMinutoDibujado;               // Refresco si cambia minuto
 // unsigned long lcd_ultimoRefrescoParpadeo;   // Refresco en caso de parpadeos
-// bool lcd_refrescarPantalla;                 // flag para forzar refresco de pantalla
 
 /*
 ********   S E T U P   ***************
@@ -158,42 +158,43 @@ int lcd_pantallaActual;                     // Para saber qué pantalla se está
 void setup()
 {
 
-  // Serial init
-  Serial.begin(9600);
-  while (!Serial)
+    // Serial init
+    Serial.begin(9600);
+    while (!Serial)
     ;
 
-  Serial.println("setup   INIT");
+    Serial.println("setup   INIT");
 
-  // init botones
-   DS_boton_setup();
-   Serial.println("setup   -  Botones");
+    // init botones
+    DS_boton_setup();
+    Serial.println("setup   -  Botones");
 
-  // init leds
-  DS_led_setup();
-  Serial.println("setup   -  Leds");
+    // init leds
+    DS_led_setup();
+    Serial.println("setup   -  Leds");
 
-  // init buzzer
-  DS_buzzer_setup();
-  Serial.println("setup   -  Buzzer");
+    // init buzzer
+    DS_buzzer_setup();
+    Serial.println("setup   -  Buzzer");
 
-   // init logica
-   maqEstado = 0;
-   Serial.println("setup   -  Logica");
-   Serial.println(F("Comandos validos: '+', '-', 'm', 'e'"));
+    // init logica
+    DS_logica_setup();
+    Serial.println("setup   -  Logica");
 
     // init rtc
     DS_rtc_setup();
 
-    //   // init LCD
+    // init LCD
     DS_lcd_setup();
-    Serial.println("setup   -  LCD")     ;
+    Serial.println("setup   -  LCD");
 
-   // fin setup
-   Serial.println("setup   FIN");
-   Serial.println("");
+    // fin setup
+    Serial.println("setup   FIN");
+    Serial.println("");
+    Serial.println("loop    INIT");
 
-   Serial.println("loop    INIT");
+    // maqEstado inicial
+    DS_logica_muestraEstado();
 }
 
 /*
@@ -227,6 +228,6 @@ zona de test
 // DS_buzzer_test(6); ok    0, 1, 2, 3, 4, 5, 6
 // DS_rtc_test(4);  ok      0, 1, 2, 3, 4
 
-DS_lcd_test(20);  
+//DS_lcd_test(20);  
 
 }//fin loop

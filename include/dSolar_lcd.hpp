@@ -12,15 +12,15 @@ objetos y variables
 extern int maqEstado;
 extern LiquidCrystal_I2C lcd;
 extern bool lcd_test_once;
-extern bool lcd_parpadeoActivo;
 extern int lcd_pantallaActual;
+extern bool lcd_parpadeoActivo;
+extern bool lcd_refrescarPantalla;
+extern bool lcd_primerArranque;
+extern unsigned long lcd_tiempoArranque; 
 
-// extern unsigned long lcd_tiempoArranque; 
-// extern bool lcd_primerArranque;
 // extern int lcd_ultimoEstadoDibujado;
 // extern int lcd_ultimoMinutoDibujado;
 // extern unsigned long lcd_ultimoRefrescoParpadeo;
-// extern bool lcd_refrescarPantalla;
 
 // solo necesarios para los test
 extern int ledEstado;
