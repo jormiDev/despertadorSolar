@@ -1,4 +1,5 @@
 #include "dSolar_logica.hpp"
+#include "dSolar_lcd.hpp"    // para poder marcar lcd_refrescarPantalla al cambiar de estado
 
 // init logica
 void DS_logica_setup()
@@ -64,6 +65,14 @@ void DS_logica_loop()
     else
         pulsado = BOTON_ZERO; // no button pressed
 
+    // si la alarma está sonando, cualquier botón la silencia
+    if (alarmaSonando && pulsado != BOTON_ZERO)
+    {
+        mibuzzer.stop();
+        alarmaSonando = false;
+        Serial.println(F("Alarma silenciada"));
+    }
+
     maqEstadoPrevio = maqEstado;
 
     // logica de la evaluación de estados
@@ -89,10 +98,21 @@ void DS_logica_loop()
         else if (pulsado == BOTON_MENOS)       maqEstado = 10;
     break;
 
-    case 21:    // menu leds - 0 / min / med / max       
-        DS_led_estado();        
-                                                maqEstado = 20;
-    break;       
+    case 21:    // menu leds - 0 / min / med / max (modo edición)
+        if (pulsado == BOTON_ENTER)             maqEstado = 20;
+        else if (pulsado == BOTON_MAS)          maqEstado = 22;
+        else if (pulsado == BOTON_MENOS)        maqEstado = 23;
+    break;
+
+    case 22:    // intensidad led ++
+        DS_led_estado_mas();
+                                                maqEstado = 21;
+    break;
+
+    case 23:    // intensidad led --
+        DS_led_estado_menos();
+                                                maqEstado = 21;
+    break;
 
     case 30:    // menu alarma
         if (pulsado == BOTON_MENU)             maqEstado = 70;
@@ -102,7 +122,7 @@ void DS_logica_loop()
     break;
 
     case 31:    // menu alarma - 0 / activada
-        DS_buzzer_estado();
+        DS_buzzer_estado(!alarmaEstado);   // invierte el estado actual (antes llamaba al getter y no cambiaba nada)
                                                 maqEstado = 30;
     break;
 
@@ -152,9 +172,20 @@ void DS_logica_loop()
         else if (pulsado == BOTON_ENTER)        maqEstado = 61;
     break;
             
-    case 61:    // cambio de potencia de los leds de la alarma
-        DS_led_alarma();        
-                                                maqEstado = 60;
+    case 61:    // cambio de potencia de los leds de la alarma (modo edición)
+        if (pulsado == BOTON_ENTER)             maqEstado = 60;
+        else if (pulsado == BOTON_MAS)          maqEstado = 62;
+        else if (pulsado == BOTON_MENOS)        maqEstado = 63;
+    break;
+
+    case 62:    // intensidad led alarma ++
+        DS_led_alarma_mas();
+                                                maqEstado = 61;
+    break;
+
+    case 63:    // intensidad led alarma --
+        DS_led_alarma_menos();
+                                                maqEstado = 61;
     break;
 
     case 70:    // configuracion alarma
@@ -220,9 +251,12 @@ void DS_logica_loop()
         break;
     }
 
-    // si cambia el estado mostrar el nuevo por serial
+    // si cambia el estado mostrar el nuevo por serial y refrescar el LCD
     if( maqEstado != maqEstadoPrevio)
+    {
         DS_logica_muestraEstado();
+        lcd_refrescarPantalla = true;
+    }
 }
 
 
@@ -244,6 +278,10 @@ void DS_logica_muestraEstado()
         Serial.println(MENSAJE_20);        break;        
     case 21:
         Serial.println(MENSAJE_21);        break;
+    case 22:
+        Serial.println(MENSAJE_22);        break;
+    case 23:
+        Serial.println(MENSAJE_23);        break;
 
     case 30:
         Serial.println(MENSAJE_30);        break;
@@ -272,6 +310,10 @@ void DS_logica_muestraEstado()
         Serial.println(MENSAJE_60);        break;
     case 61:
         Serial.println(MENSAJE_61);        break;
+    case 62:
+        Serial.println(MENSAJE_62);        break;
+    case 63:
+        Serial.println(MENSAJE_63);        break;
 
     case 70:
         Serial.println(MENSAJE_70);        break;

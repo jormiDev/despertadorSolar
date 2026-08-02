@@ -13,6 +13,7 @@ void DS_rtc_setup()
     alarma_hora = 0;
     alarma_minuto = 0;
     alarmaDisparadaEsteMinuto = false;
+    alarmaSonando = false;
 
     //inicializar bus I2C y RTC
     if (!rtc.begin())
@@ -62,22 +63,24 @@ void DS_rtc_loop()
                 if (!alarmaDisparadaEsteMinuto)
                 {
                     Serial.println(F("[ALERTA] ¡Hora de la alarma coincidente!"));
-                    // Llama a tu lógica actual para activar el sonido
-                    /*
-                    
-                    ALARMA activada - Aquí puedes llamar a la función que activa el buzzer o lo que quieras que haga tu alarma
-                    DS_buzzer_estado(true); // Ejemplo: activar la alarma sonora
-
-                    */
                     alarmaDisparadaEsteMinuto = true;
+                    alarmaSonando = true;  // arranca el sonido de la alarma
                 }
             }
             else
             {
-                // Reset del flag cuando el minuto cambia para dejarla lista para el día siguiente
+                // Reset de los flags cuando el minuto cambia para dejarla lista para el día siguiente
                 alarmaDisparadaEsteMinuto = false;
+                alarmaSonando = false;
             }
         }
+    }
+
+    // Mientras la alarma esté activa, seguimos alimentando la melodía en cada loop
+    // (DS_buzzer_canta() ya controla internamente el ritmo de reproducción)
+    if (alarmaSonando)
+    {
+        DS_buzzer_canta();
     }
 }
 

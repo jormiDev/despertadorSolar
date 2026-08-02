@@ -189,3 +189,63 @@ void DS_led_alarma()
         ledAlarma = 0; // reset to default
     }
 }
+
+// incrementa ledEstado (0->1->2->3->0) y aplica el cambio a los leds
+void DS_led_estado_mas()
+{
+    if (ledEstado < LED_MAXIMO)
+        ledEstado++;
+    else
+        ledEstado = LED_APAGADO;
+
+    DS_led_estado();
+
+    Serial.print(MENSAJE_21);
+    Serial.print(": ");
+    Serial.println(ledEstado);
+}
+
+// decrementa ledEstado (0->3->2->1->0) y aplica el cambio a los leds
+void DS_led_estado_menos()
+{
+    if (ledEstado > LED_APAGADO)
+        ledEstado--;
+    else
+        ledEstado = LED_MAXIMO;
+
+    DS_led_estado();
+
+    Serial.print(MENSAJE_21);
+    Serial.print(": ");
+    Serial.println(ledEstado);
+}
+
+// incrementa ledAlarma (0->1->2->3->0) y aplica el cambio a los leds
+void DS_led_alarma_mas()
+{
+    if (ledAlarma < LED_MAXIMO)
+        ledAlarma++;
+    else
+        ledAlarma = LED_APAGADO;
+
+    DS_led_alarma();
+
+    Serial.print(MENSAJE_61);
+    Serial.print(": ");
+    Serial.println(ledAlarma);
+}
+
+// decrementa ledAlarma (0->3->2->1->0) y aplica el cambio a los leds
+void DS_led_alarma_menos()
+{
+    if (ledAlarma > LED_APAGADO)
+        ledAlarma--;
+    else
+        ledAlarma = LED_MAXIMO;
+
+    DS_led_alarma();
+
+    Serial.print(MENSAJE_61);
+    Serial.print(": ");
+    Serial.println(ledAlarma);
+}

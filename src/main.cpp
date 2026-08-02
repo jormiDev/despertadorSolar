@@ -32,7 +32,7 @@ LCD 1602
 #include <ezButton.h>
 #include <ezBuzzer.h>
 #include <Wire.h> 
-// #include <LiquidCrystal_I2C.h>
+#include <LiquidCrystal_I2C.h>
 
 #include "constantes.h"
 
@@ -136,9 +136,16 @@ int rtc_minuto;
 int alarma_hora;    //almacenará la hora de la alarma (0-23:0-59)
 int alarma_minuto;
 bool alarmaDisparadaEsteMinuto = false; // para evitar que la alarma se dispare varias veces en el mismo minuto, esta variable se pone a true cuando se dispara la alarma y se resetea a false cuando el minuto cambia
+bool alarmaSonando = false; // true mientras el buzzer debe seguir sonando (hasta silenciarla o cambiar de minuto)
 
 // dSolar_lcd
-// LiquidCrystal_I2C lcd(LCD_I2C_ADR, LCD_COLUMNAS, LCD_FILAS); 
+LiquidCrystal_I2C lcd(LCD_I2C_ADR, LCD_COLUMNAS, LCD_FILAS);
+bool lcd_test_once = false;
+int lcd_pantallaActual = 0;
+bool lcd_parpadeoActivo = false;
+bool lcd_refrescarPantalla = true;
+bool lcd_primerArranque = true;
+unsigned long lcd_tiempoArranque = 0;
 
 
 
@@ -177,22 +184,9 @@ void setup()
    // init rtc
    DS_rtc_setup();
 
-
-  /*    test pendiente      */
-
-   //   DS_lcd_pantalla(1);
-   //   delay(1000);
-   //   DS_lcd_pantalla(2);
-   //   delay(1000);
-
-   //   lcd.clear();
-
-
-
-   //   // init LCD
-   //   DS_lcd_setup();
-   //   Serial.println("setup   -  LCD")     ;
-
+   // init LCD
+   DS_lcd_setup();
+   Serial.println("setup   -  LCD");
 
 
    // fin setup
@@ -216,6 +210,7 @@ DS_boton_loop();
 DS_led_loop();
 DS_buzzer_loop();
 DS_rtc_loop();
+DS_lcd_loop();
 
 
 /*

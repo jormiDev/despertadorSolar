@@ -9,7 +9,6 @@
 #include "dSolar_rtc.hpp"
 #include "dSolar_boton.hpp"
 
-
 /*
 objetos y variables
 */
