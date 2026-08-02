@@ -1,13 +1,11 @@
 #include "dSolar_logica.hpp"
-#include "dSolar_lcd.hpp"
+#include "dSolar_lcd.hpp"    // para poder marcar lcd_refrescarPantalla al cambiar de estado
 
 // init logica
 void DS_logica_setup()
 {
     maqEstado = 0;
     maqEstadoPrevio = 0;
-    Serial.println(F("Comandos validos: '+', '-', 'm', 'e'"));
-
 }
 
 // función para gestionar la lectura de comandos por Serial
@@ -42,10 +40,7 @@ void DS_logica_gestionarLecturaSerial()
 // llamada en cada loop
 void DS_logica_loop()
 {
-    maqEstadoPrevio = maqEstado;
-
-    // Evaluación de entradas por Serial o Botón
-    if ( entradaPorSerial == 'e' || entradaPorBoton == 'e'){
+      if ( entradaPorSerial == 'e' || entradaPorBoton == 'e'){
         pulsado = BOTON_ENTER;
         entradaPorSerial = '\0'; // Limpiar la entrada por Serial después de procesarla
         entradaPorBoton = '\0';  // Limpiar la entrada por Botón después
@@ -70,49 +65,65 @@ void DS_logica_loop()
     else
         pulsado = BOTON_ZERO; // no button pressed
 
+    // si la alarma está sonando, cualquier botón la silencia
+    if (alarmaSonando && pulsado != BOTON_ZERO)
+    {
+        mibuzzer.stop();
+        alarmaSonando = false;
+        Serial.println(F("Alarma silenciada"));
+    }
+
+    maqEstadoPrevio = maqEstado;
 
     // logica de la evaluación de estados
     switch (maqEstado)
     {
     case 0:     // inicial
+        if (pulsado == BOTON_MENU)             maqEstado = 40;
+        else if (pulsado == BOTON_MAS)         maqEstado = 10;
+        else if (pulsado == BOTON_MENOS)       maqEstado = 30;
     break;
 
     case 10:    // menu reloj
-        if (pulsado == BOTON_MENU)             maqEstado = 40;
-        else if (pulsado == BOTON_ENTER)         maqEstado = 20;
+        if (pulsado == BOTON_MENU)             maqEstado = 50;
+        else if (pulsado == BOTON_MAS)         maqEstado = 20;
+        else if (pulsado == BOTON_MENOS)       maqEstado = 00;
     break;
 
     case 20:    //menu leds
-        if (pulsado == BOTON_MENU)             maqEstado = 40;
-        else if (pulsado == BOTON_ENTER)       maqEstado = 30;
-        else if (pulsado == BOTON_MAS)         maqEstado = 21;
-        else if (pulsado == BOTON_MENOS)       maqEstado = 21;
+        if (pulsado == BOTON_MENU)             maqEstado = 60;
+        else if (pulsado == BOTON_ENTER)       maqEstado = 21;
+        
+        else if (pulsado == BOTON_MAS)         maqEstado = 30;
+        else if (pulsado == BOTON_MENOS)       maqEstado = 10;
     break;
 
-    case 21:    // menu leds - 0 / min / med / max
-        if (pulsado == BOTON_MAS)
-        {
-            ledEstado = (ledEstado + 1) % 4; // Cicla entre 0 y 3
-            DS_led_estado();
-        }
-        else if (pulsado == BOTON_MENOS)
-        {
-            ledEstado = (ledEstado == 0) ? 3 : ledEstado - 1;
-            DS_led_estado();
-        }
-        maqEstado = 20; // volvemos
-    break;       
+    case 21:    // menu leds - 0 / min / med / max (modo edición)
+        if (pulsado == BOTON_ENTER)             maqEstado = 20;
+        else if (pulsado == BOTON_MAS)          maqEstado = 22;
+        else if (pulsado == BOTON_MENOS)        maqEstado = 23;
+    break;
+
+    case 22:    // intensidad led ++
+        DS_led_estado_mas();
+                                                maqEstado = 21;
+    break;
+
+    case 23:    // intensidad led --
+        DS_led_estado_menos();
+                                                maqEstado = 21;
+    break;
 
     case 30:    // menu alarma
-        if (pulsado == BOTON_MENU)             maqEstado = 40;
-        else if (pulsado == BOTON_ENTER)       maqEstado = 10;
-        else if (pulsado == BOTON_MAS)         maqEstado = 31;
-        else if (pulsado == BOTON_MENOS)       maqEstado = 31;
+        if (pulsado == BOTON_MENU)             maqEstado = 70;
+        else if (pulsado == BOTON_ENTER)      maqEstado = 31;
+        else if (pulsado == BOTON_MAS)         maqEstado = 00;
+        else if (pulsado == BOTON_MENOS)       maqEstado = 20;
     break;
 
     case 31:    // menu alarma - 0 / activada
-        DS_buzzer_estado();
-        maqEstado = 30;
+        DS_buzzer_estado(!alarmaEstado);   // invierte el estado actual (antes llamaba al getter y no cambiaba nada)
+                                                maqEstado = 30;
     break;
 
     case 40:    // configuracion
@@ -161,9 +172,20 @@ void DS_logica_loop()
         else if (pulsado == BOTON_ENTER)        maqEstado = 61;
     break;
             
-    case 61:    // cambio de potencia de los leds de la alarma
-        DS_led_alarma();        
-                                                maqEstado = 60;
+    case 61:    // cambio de potencia de los leds de la alarma (modo edición)
+        if (pulsado == BOTON_ENTER)             maqEstado = 60;
+        else if (pulsado == BOTON_MAS)          maqEstado = 62;
+        else if (pulsado == BOTON_MENOS)        maqEstado = 63;
+    break;
+
+    case 62:    // intensidad led alarma ++
+        DS_led_alarma_mas();
+                                                maqEstado = 61;
+    break;
+
+    case 63:    // intensidad led alarma --
+        DS_led_alarma_menos();
+                                                maqEstado = 61;
     break;
 
     case 70:    // configuracion alarma
@@ -187,7 +209,7 @@ void DS_logica_loop()
                                                 maqEstado = 71;
     break;
 
-    case 75:    // configuracion alarma - minutos
+    case 75:    // configuracion alarma - horas
         if (pulsado == BOTON_ENTER)            maqEstado = 70;
         else if (pulsado == BOTON_MAS)         maqEstado = 76;
         else if (pulsado == BOTON_MENOS)        maqEstado = 77;
@@ -221,7 +243,7 @@ void DS_logica_loop()
 
     case 90:    // configuracion alarma - volumen
         if (pulsado == BOTON_MENU)             maqEstado = 40;
-        else if (pulsado == BOTON_ENTER)       maqEstado = 10;
+        else if (pulsado == BOTON_ENTER)       maqEstado = 0;
     break;
 
    default:
@@ -229,10 +251,11 @@ void DS_logica_loop()
         break;
     }
 
-    // si cambia el estado mostrar por Serial
-    if( maqEstado != maqEstadoPrevio){
+    // si cambia el estado mostrar el nuevo por serial y refrescar el LCD
+    if( maqEstado != maqEstadoPrevio)
+    {
+        DS_logica_muestraEstado();
         lcd_refrescarPantalla = true;
-        DS_logica_muestraEstado();          // mostrar el nuevo por serial
     }
 }
 
@@ -255,6 +278,10 @@ void DS_logica_muestraEstado()
         Serial.println(MENSAJE_20);        break;        
     case 21:
         Serial.println(MENSAJE_21);        break;
+    case 22:
+        Serial.println(MENSAJE_22);        break;
+    case 23:
+        Serial.println(MENSAJE_23);        break;
 
     case 30:
         Serial.println(MENSAJE_30);        break;
@@ -283,6 +310,10 @@ void DS_logica_muestraEstado()
         Serial.println(MENSAJE_60);        break;
     case 61:
         Serial.println(MENSAJE_61);        break;
+    case 62:
+        Serial.println(MENSAJE_62);        break;
+    case 63:
+        Serial.println(MENSAJE_63);        break;
 
     case 70:
         Serial.println(MENSAJE_70);        break;

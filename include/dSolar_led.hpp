@@ -33,4 +33,12 @@ void DS_led_estado();
 // cambia la potencia de los leds de la alarma 0(apagado)/1/2/3
 void DS_led_alarma();
 
+// incrementa/decrementa ledEstado (0->1->2->3->0) y aplica el cambio
+void DS_led_estado_mas();
+void DS_led_estado_menos();
+
+// incrementa/decrementa ledAlarma (0->1->2->3->0) y aplica el cambio
+void DS_led_alarma_mas();
+void DS_led_alarma_menos();
+
 #endif

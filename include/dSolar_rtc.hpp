@@ -20,6 +20,7 @@ extern int rtc_minuto;
 extern int alarma_hora;
 extern int alarma_minuto;
 extern bool alarmaDisparadaEsteMinuto;
+extern bool alarmaSonando;     // true mientras el buzzer debe seguir sonando (hasta silenciarla o cambiar de minuto)
 extern bool alarmaEstado;
 
 /*

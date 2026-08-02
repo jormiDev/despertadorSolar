@@ -32,10 +32,9 @@ pines conectados
 /*
 main
 */
-#define     VERSION             0.03    // 4 caracteres en total, incluyendo el punto decimal
-                                        // 0.01 - version inicial
-                                        // 0.02 - test de ubuntu leds, botones y buzzer
-                                        // 0.03 - actualización de funcionalidades  ds_LCD
+#define     VERSION             0.02    
+                            // 0.01 - version inicial
+                            // 0.02 - test de ubuntu leds, botones y buzzer
 
 /*
 dSolar_lcd.hpp
@@ -43,7 +42,7 @@ dSolar_lcd.hpp
 #define     LCD_I2C_ADR         0x27
 #define     LCD_COLUMNAS        16
 #define     LCD_FILAS           2
-#define     LCD_TIEMPO_INICIO   10000   // Tiempo en milisegundos que se muestra la pantalla de inicio (10 segundos)
+#define     LCD_TIEMPO_INICIO   10000   // ms que se muestra la pantalla de bienvenida antes de pasar a la hora
 
 /*
 dSolar_led.hpp
@@ -72,6 +71,8 @@ dSolar_logica.hpp
 
 #define     MENSAJE_20          "Leds"
 #define     MENSAJE_21          "Led Estado:   0 / min / med / max"
+#define     MENSAJE_22          "Led Estado ++"
+#define     MENSAJE_23          "Led Estado --"
 
 #define     MENSAJE_30          "Alarma"
 #define     MENSAJE_31          "Alarma Estado:  0 / activada"
@@ -88,6 +89,8 @@ dSolar_logica.hpp
 
 #define     MENSAJE_60          "Conf. Alarma Leds"
 #define     MENSAJE_61          "Led Alarma"
+#define     MENSAJE_62          "Led Alarma ++"
+#define     MENSAJE_63          "Led Alarma --"
 
 #define     MENSAJE_70          "Conf. Alarma"
 #define     MENSAJE_71          "Alarma Horas"
